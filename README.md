@@ -1,0 +1,2 @@
+# tonspin
+Crypto spin game
