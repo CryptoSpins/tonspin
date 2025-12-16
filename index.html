@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TonSpin - Free Crypto Spin Game | Win TON, USDT, BTC Daily Rewards</title>
-    <meta name="description" content="🎰 Spin FREE & win real crypto! Earn TON, USDT, Bitcoin instantly. 100% FREE first spin. Join 100,000+ players winning daily crypto rewards on Telegram!">
-    <meta name="keywords" content="free crypto, spin to earn, win USDT, TON rewards, crypto games, earn bitcoin, telegram games, TON blockchain, free TON, win crypto, telegram mini app">
+    <meta name="description" content="🎰 Spin FREE & win real crypto! Earn TON, USDT, Bitcoin instantly. 100% FREE first spin. Join 150,000+ players winning daily crypto rewards on Telegram!">
+    <meta name="keywords" content="free crypto, spin to earn, win USDT, TON rewards, crypto games, earn bitcoin, telegram games, TON blockchain, free TON, win crypto, telegram mini app, free spin, crypto wheel">
     <meta property="og:title" content="TonSpin - Win Free Crypto Every Spin! 🎰">
-    <meta property="og:description" content="Get your FREE spin now! Win TON, USDT, BTC & more. 100,000+ users already winning daily!">
+    <meta property="og:description" content="Get your FREE spin now! Win TON, USDT, BTC & more. 150,000+ users already winning daily!">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#0f172a">
@@ -31,11 +31,6 @@
         }
         
         /* Animations */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(var(--spin-deg, 1800deg)); }
-        }
-        
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.05); opacity: 0.8; }
@@ -69,6 +64,11 @@
             to { transform: translateY(0); opacity: 1; }
         }
         
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
         @keyframes ticker {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-200%); }
@@ -79,8 +79,20 @@
             50% { background: linear-gradient(90deg, #ef4444, #f87171); }
         }
         
-        .animate-spin-wheel {
-            animation: spin 5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        @keyframes wheelSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(var(--spin-to, 1800deg)); }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.8)); }
+            50% { filter: drop-shadow(0 0 25px rgba(251, 191, 36, 1)); }
         }
         
         .animate-pulse { animation: pulse 2s ease-in-out infinite; }
@@ -88,12 +100,14 @@
         .animate-float { animation: float 3s ease-in-out infinite; }
         .animate-shake { animation: shake 0.6s ease-in-out infinite; }
         .animate-slideIn { animation: slideIn 0.5s ease-out forwards; }
+        .animate-slideUp { animation: slideUp 0.6s ease-out forwards; }
+        .animate-bounceIn { animation: bounceIn 0.5s ease-out forwards; }
         
         /* Layout */
         .container {
             max-width: 420px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding: 0 16px 100px;
         }
         
         /* Live Ticker */
@@ -107,7 +121,7 @@
             display: flex;
             gap: 40px;
             white-space: nowrap;
-            animation: ticker 25s linear infinite;
+            animation: ticker 20s linear infinite;
         }
         
         .ticker-item {
@@ -137,6 +151,15 @@
             margin-bottom: 16px;
         }
         
+        .card.hidden {
+            display: none;
+        }
+        
+        .card.highlight {
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+        }
+        
         /* Balance Grid */
         .balance-grid {
             display: grid;
@@ -149,6 +172,12 @@
             border-radius: 16px;
             padding: 16px 8px;
             text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .balance-item.won {
+            animation: bounceIn 0.5s ease-out;
+            border: 1px solid #4ade80;
         }
         
         .balance-icon {
@@ -160,6 +189,12 @@
             font-size: 18px;
             font-weight: 800;
             margin-bottom: 4px;
+            transition: all 0.3s;
+        }
+        
+        .balance-value.increase {
+            animation: bounceIn 0.3s ease-out;
+            color: #4ade80 !important;
         }
         
         .balance-label {
@@ -170,19 +205,33 @@
         }
         
         /* Wheel */
+        .wheel-section {
+            position: relative;
+            padding: 30px 20px;
+        }
+        
         .wheel-container {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 280px;
+            height: 280px;
             margin: 0 auto;
         }
         
         .wheel-glow {
             position: absolute;
-            inset: -20px;
-            background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, transparent 70%);
+            inset: -30px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
             border-radius: 50%;
             filter: blur(20px);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        
+        .wheel-outer {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706, #fbbf24);
+            padding: 8px;
         }
         
         .wheel {
@@ -190,28 +239,14 @@
             height: 100%;
             border-radius: 50%;
             position: relative;
-            border: 6px solid #fbbf24;
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 50px rgba(0,0,0,0.3);
             overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
         
-        .wheel-inner {
-            position: absolute;
-            inset: 0;
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-        }
-        
-        .wheel-segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            left: 50%;
-            top: 0;
-            transform-origin: 0% 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            clip-path: polygon(0% 100%, 100% 0%, 0% 0%);
         }
         
         .wheel-center {
@@ -219,22 +254,22 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 4px solid #fbbf24;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             z-index: 10;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         
         .wheel-pointer {
             position: absolute;
-            top: -15px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
@@ -246,35 +281,58 @@
             display: block;
             width: 0;
             height: 0;
-            border-left: 18px solid transparent;
-            border-right: 18px solid transparent;
-            border-top: 30px solid #fbbf24;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid #fbbf24;
         }
         
-        /* Canvas Wheel */
-        #wheelCanvas {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
+        .wheel-pointer::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid #f59e0b;
         }
         
         /* Buttons */
         .btn-primary {
             width: 100%;
-            padding: 18px 24px;
+            padding: 20px 24px;
             border: none;
             border-radius: 16px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-spin {
             background: linear-gradient(135deg, #06b6d4, #8b5cf6);
             color: white;
+        }
+        
+        .btn-spin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-spin:hover::before {
+            left: 100%;
         }
         
         .btn-spin:not(:disabled):hover {
@@ -305,7 +363,7 @@
         }
         
         .btn-grid button {
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 14px;
             font-size: 14px;
@@ -322,15 +380,72 @@
         .free-spin-badge {
             background: linear-gradient(135deg, #f59e0b, #ef4444);
             border-radius: 14px;
-            padding: 14px 20px;
+            padding: 16px 20px;
             text-align: center;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 16px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+        }
+        
+        .free-spin-badge.hidden {
+            display: none;
+        }
+        
+        /* Unlock Card - Hidden by Default */
+        .unlock-card {
+            display: none;
+            border: 2px solid #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(30, 41, 59, 0.9));
+        }
+        
+        .unlock-card.visible {
+            display: block;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .unlock-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .unlock-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+        
+        .unlock-header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        
+        .unlock-amount {
+            text-align: center;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .unlock-amount-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .unlock-amount-value {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4ade80, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         /* Progress Section */
@@ -347,7 +462,7 @@
         }
         
         .progress-bar {
-            height: 10px;
+            height: 12px;
             background: rgba(51, 65, 85, 0.8);
             border-radius: 10px;
             overflow: hidden;
@@ -360,16 +475,21 @@
             transition: width 0.5s ease;
         }
         
+        .progress-fill.complete {
+            background: linear-gradient(90deg, #10b981, #4ade80);
+        }
+        
         /* Withdraw Button */
         .btn-withdraw {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             border: none;
             border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 16px;
         }
         
         .btn-withdraw.locked {
@@ -381,6 +501,7 @@
         .btn-withdraw.unlocked {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
+            animation: glow 2s ease-in-out infinite;
         }
         
         /* Spins Counter */
@@ -396,7 +517,16 @@
             font-weight: 700;
         }
         
-        /* Tasks List */
+        /* Get More Spins */
+        .more-spins-card {
+            display: none;
+        }
+        
+        .more-spins-card.visible {
+            display: block;
+            animation: slideUp 0.6s ease-out;
+        }
+        
         .task-item {
             display: flex;
             justify-content: space-between;
@@ -486,8 +616,8 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             display: none;
             align-items: center;
@@ -510,7 +640,7 @@
         }
         
         .modal-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             text-align: center;
             margin-bottom: 12px;
@@ -521,6 +651,7 @@
             text-align: center;
             font-size: 14px;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
         
         .modal-input {
@@ -563,7 +694,7 @@
         
         .modal-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 12px;
             font-size: 15px;
@@ -594,13 +725,14 @@
         
         /* Win Modal Special */
         .win-modal-icon {
-            font-size: 72px;
+            font-size: 80px;
             text-align: center;
             margin-bottom: 16px;
+            animation: bounceIn 0.5s ease-out;
         }
         
         .win-modal-amount {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 900;
             text-align: center;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
@@ -608,6 +740,27 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 8px;
+        }
+        
+        .withdraw-teaser {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid #10b981;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        
+        .withdraw-teaser p:first-child {
+            color: #4ade80;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .withdraw-teaser p:last-child {
+            color: #94a3b8;
+            font-size: 12px;
         }
         
         .near-miss-box {
@@ -647,7 +800,7 @@
         }
         
         .logo {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 900;
             background: linear-gradient(135deg, #22d3ee, #a855f7, #f59e0b);
             -webkit-background-clip: text;
@@ -686,8 +839,8 @@
         /* Responsive */
         @media (max-width: 360px) {
             .wheel-container {
-                width: 260px;
-                height: 260px;
+                width: 240px;
+                height: 240px;
             }
             .balance-value {
                 font-size: 16px;
@@ -696,48 +849,50 @@
     </style>
 </head>
 <body>
-    <!-- Live Winners Ticker -->
+    <!-- Live Winners Ticker - Shows actual wheel prizes -->
     <div class="ticker-wrap">
         <div class="ticker" id="ticker">
-            <div class="ticker-item">🎉 Alex***89 won <b>75 USDT</b></div>
+            <div class="ticker-item">🎉 Alex***89 won <b>50 USDT</b> just now!</div>
             <div class="ticker-item">💎 Kim***23 won <b>5 TON</b></div>
-            <div class="ticker-item">🚀 Max***56 won <b>0.008 BTC</b></div>
-            <div class="ticker-item">⭐ Sara***12 won <b>120 USDT</b></div>
-            <div class="ticker-item">🔥 John***78 won <b>8 TON</b></div>
-            <div class="ticker-item">💰 Emma***34 won <b>0.15 ETH</b></div>
+            <div class="ticker-item">🚀 Max***56 won <b>0.01 BTC</b></div>
+            <div class="ticker-item">⭐ Sara***12 won <b>25 USDT</b></div>
+            <div class="ticker-item">🔥 John***78 won <b>10 TON</b></div>
+            <div class="ticker-item">💰 Emma***34 won <b>15 USDT</b></div>
+            <div class="ticker-item">🏆 David***90 won <b>500 USDT</b> JACKPOT!</div>
+            <div class="ticker-item">✨ Lisa***45 won <b>2 TON</b></div>
         </div>
     </div>
 
     <!-- Urgency Banner -->
     <div class="urgency-banner" id="urgencyBanner">
-        ⚡ BONUS EVENT: <span id="countdown">14:59</span> left for 3X REWARDS! ⚡
+        ⚡ BONUS HOUR: <span id="countdown">14:59</span> left for 2X REWARDS! ⚡
     </div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="logo">💎 TONSPIN</div>
-            <div class="tagline">🌟 127,534 Players • $4.2M Paid Out 🌟</div>
+            <div class="tagline">🌟 152,847 Players • $5.7M Paid Out 🌟</div>
         </div>
 
         <!-- Balance Card -->
-        <div class="card">
+        <div class="card" id="balanceCard">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <span style="color: #94a3b8; font-size: 14px;">Your Balance</span>
                 <div class="status-badge">✓ VERIFIED</div>
             </div>
             <div class="balance-grid">
-                <div class="balance-item">
+                <div class="balance-item" id="usdtBox">
                     <div class="balance-icon">💵</div>
                     <div class="balance-value" style="color: #4ade80;" id="balanceUSDT">0.00</div>
                     <div class="balance-label">USDT</div>
                 </div>
-                <div class="balance-item">
+                <div class="balance-item" id="tonBox">
                     <div class="balance-icon">💎</div>
                     <div class="balance-value" style="color: #22d3ee;" id="balanceTON">0.00</div>
                     <div class="balance-label">TON</div>
                 </div>
-                <div class="balance-item">
+                <div class="balance-item" id="btcBox">
                     <div class="balance-icon">₿</div>
                     <div class="balance-value" style="color: #fb923c;" id="balanceBTC">0.000000</div>
                     <div class="balance-label">BTC</div>
@@ -747,98 +902,105 @@
 
         <!-- Free Spin Badge -->
         <div class="free-spin-badge animate-shake" id="freeSpinBadge">
-            🎁 You have <span id="spinCount">1</span> FREE SPIN! Claim it now!
+            🎁 You have <span id="spinCount">1</span> FREE SPIN waiting! Claim it now!
         </div>
 
         <!-- Spin Wheel -->
-        <div class="card" style="padding: 24px 16px;">
+        <div class="card wheel-section">
             <div class="wheel-container">
                 <div class="wheel-glow"></div>
                 <div class="wheel-pointer"></div>
-                <div class="wheel" id="wheelWrapper">
-                    <canvas id="wheelCanvas" width="300" height="300"></canvas>
-                    <div class="wheel-center">🎰</div>
+                <div class="wheel-outer">
+                    <div class="wheel" id="wheelWrapper">
+                        <canvas id="wheelCanvas" width="280" height="280"></canvas>
+                    </div>
                 </div>
+                <div class="wheel-center">🎰</div>
             </div>
         </div>
 
         <!-- Spin Button -->
         <button class="btn-primary btn-spin animate-glow" id="spinBtn" onclick="spinWheel()">
-            🎰 SPIN NOW - FREE!
+            🎰 SPIN NOW - IT'S FREE!
         </button>
 
         <!-- Spins Counter -->
         <div class="spins-counter">
-            Spins Left: <span id="spinsLeft">1</span> | 
-            <span style="color: #fbbf24;">Get more spins below ⬇️</span>
+            Spins Available: <span id="spinsLeft">1</span>
         </div>
 
-        <!-- Progress Card -->
-        <div class="card">
-            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
-                📊 Unlock Withdrawals
-            </h3>
+        <!-- UNLOCK CARD - Hidden until first win -->
+        <div class="card unlock-card" id="unlockCard">
+            <div class="unlock-header">
+                <h3>🔓 Withdraw Your Winnings!</h3>
+                <p>Complete 2 simple steps to unlock instant withdrawals</p>
+            </div>
+            
+            <div class="unlock-amount">
+                <div class="unlock-amount-label">Your Total Winnings</div>
+                <div class="unlock-amount-value" id="totalWinnings">$0.00</div>
+            </div>
             
             <div class="progress-item">
                 <div class="progress-header">
-                    <span style="color: #94a3b8;">💎 Deposit 2 TON</span>
+                    <span>💎 Step 1: Deposit 2 TON</span>
                     <span id="depositStatus" style="color: #ef4444;">0/2 TON</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="depositProgress" style="width: 0%;"></div>
                 </div>
+                <p style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                    Verification deposit • Returned with your winnings
+                </p>
             </div>
             
             <div class="progress-item">
                 <div class="progress-header">
-                    <span style="color: #94a3b8;">👥 Invite 1 Friend</span>
+                    <span>👥 Step 2: Invite 1 Friend</span>
                     <span id="inviteStatus" style="color: #ef4444;">0/1 Friend</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="inviteProgress" style="width: 0%;"></div>
                 </div>
+                <p style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                    Share your referral link • Earn bonus spins too!
+                </p>
             </div>
 
-            <p style="text-align: center; font-size: 12px; color: #64748b; margin-top: 8px;">
-                Complete both tasks to withdraw your winnings!
-            </p>
+            <div class="btn-grid" style="margin-top: 20px;">
+                <button class="btn-secondary" onclick="openModal('depositModal')">
+                    💎 Deposit 2 TON
+                </button>
+                <button class="btn-tertiary" onclick="openModal('inviteModal')">
+                    👥 Invite Friend
+                </button>
+            </div>
+
+            <button class="btn-withdraw locked" id="withdrawBtn" onclick="handleWithdraw()">
+                🔒 Complete Steps to Withdraw
+            </button>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="btn-grid">
-            <button class="btn-secondary" onclick="openModal('depositModal')">
-                💎 Deposit TON
-            </button>
-            <button class="btn-tertiary" onclick="openModal('inviteModal')">
-                👥 Invite Friend
-            </button>
-        </div>
-
-        <!-- Withdraw Button -->
-        <button class="btn-withdraw locked" id="withdrawBtn" onclick="handleWithdraw()">
-            🔒 Complete Tasks to Withdraw
-        </button>
-
-        <!-- Get More Spins -->
-        <div class="card" style="margin-top: 16px;">
-            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
+        <!-- Get More Spins - Hidden until no spins -->
+        <div class="card more-spins-card" id="moreSpinsCard">
+            <h3 style="font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 16px;">
                 🎁 Get More Spins
             </h3>
             
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">📅</span>
-                    <span>Daily Check-in</span>
+                    <span>Daily Bonus</span>
                 </div>
-                <button class="task-btn" onclick="claimDailyBonus()">Claim</button>
+                <button class="task-btn" onclick="claimDailyBonus()">Claim +1</button>
             </div>
             
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">💎</span>
-                    <span>Deposit 1 TON</span>
+                    <span>Deposit 2 TON</span>
                 </div>
-                <span class="task-reward">+10 SPINS</span>
+                <span class="task-reward">+25 SPINS</span>
             </div>
             
             <div class="task-item">
@@ -846,20 +1008,24 @@
                     <span class="task-icon">👥</span>
                     <span>Each Referral</span>
                 </div>
-                <span class="task-reward">+5 SPINS</span>
+                <span class="task-reward">+10 SPINS</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <span class="task-icon">📱</span>
+                    <span>Join Telegram</span>
+                </div>
+                <button class="task-btn" onclick="joinTelegram()">+3 Spins</button>
             </div>
         </div>
 
         <!-- Recent Wins -->
-        <div class="card">
+        <div class="card" id="winsCard" style="display: none;">
             <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
-                🏆 Your Recent Wins
+                🏆 Your Winning History
             </h3>
-            <div class="wins-list" id="winsList">
-                <div class="win-item" style="justify-content: center; color: #64748b;">
-                    Spin to start winning! 🎰
-                </div>
-            </div>
+            <div class="wins-list" id="winsList"></div>
         </div>
 
         <!-- Trust Badges -->
@@ -894,11 +1060,13 @@
         <div class="modal">
             <div class="modal-title">💎 Deposit 2 TON</div>
             <div class="modal-desc">
-                Send exactly 2 TON to unlock withdrawals and receive 20 FREE bonus spins!
+                Send exactly <b>2 TON</b> to unlock withdrawals.<br>
+                Your deposit will be returned with your winnings!<br><br>
+                <span style="color: #4ade80;">🎁 BONUS: Get 25 FREE spins instantly!</span>
             </div>
             
             <div class="wallet-box">
-                <div class="wallet-label">TON Wallet Address</div>
+                <div class="wallet-label">Send 2 TON to this address:</div>
                 <div class="wallet-address" id="walletAddress">UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M</div>
             </div>
             
@@ -921,7 +1089,8 @@
         <div class="modal">
             <div class="modal-title">👥 Invite Friends</div>
             <div class="modal-desc">
-                Share your unique link and earn 5 FREE spins for each friend who joins!
+                Share your link and unlock withdrawals!<br><br>
+                <span style="color: #4ade80;">🎁 BONUS: Earn 10 FREE spins per friend!</span>
             </div>
             
             <div class="wallet-box">
@@ -946,21 +1115,25 @@
     <!-- Win Modal -->
     <div class="modal-overlay" id="winModal">
         <div class="modal">
-            <div class="win-modal-icon animate-float">🎉</div>
-            <div class="modal-title">CONGRATULATIONS!</div>
-            <div class="modal-desc">You won:</div>
+            <div class="win-modal-icon">🎉</div>
+            <div class="modal-title">YOU WON!</div>
             <div class="win-modal-amount" id="winAmount">50 USDT</div>
-            <p style="text-align: center; color: #64748b; font-size: 13px; margin-bottom: 16px;">
-                Added to your balance!
+            <p style="text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 8px;">
+                Added to your balance! 💰
             </p>
             
-            <div class="near-miss-box" id="nearMissBox" style="display: none;">
-                <p>😱 SO CLOSE to the JACKPOT!</p>
-                <p>Spin again for another chance at 500 USDT!</p>
+            <div class="withdraw-teaser" id="withdrawTeaser">
+                <p>💰 Ready to withdraw your winnings?</p>
+                <p>Complete 2 simple steps below!</p>
             </div>
             
-            <button class="modal-btn modal-btn-primary" onclick="closeModal('winModal')">
-                🎰 Spin Again!
+            <div class="near-miss-box" id="nearMissBox" style="display: none;">
+                <p id="nearMissText">😱 SO CLOSE to 500 USDT JACKPOT!</p>
+                <p>One more spin could be the big one!</p>
+            </div>
+            
+            <button class="modal-btn modal-btn-primary" onclick="closeWinModal()">
+                🎰 Continue
             </button>
         </div>
     </div>
@@ -970,14 +1143,14 @@
         <div class="modal">
             <div class="win-modal-icon">😢</div>
             <div class="modal-title">No Spins Left!</div>
-            <div class="modal-desc">Get more spins to continue winning:</div>
+            <div class="modal-desc">Get more spins to keep winning:</div>
             
             <button class="modal-btn modal-btn-primary" onclick="closeModal('noSpinsModal'); openModal('depositModal');">
-                💎 Deposit = 20 Spins
+                💎 Deposit = 25 Spins
             </button>
             
             <button class="modal-btn modal-btn-success" onclick="closeModal('noSpinsModal'); openModal('inviteModal');">
-                👥 Invite = 5 Spins
+                👥 Invite = 10 Spins
             </button>
             
             <button class="modal-btn modal-btn-cancel" onclick="closeModal('noSpinsModal')">
@@ -990,13 +1163,16 @@
     <div class="modal-overlay" id="withdrawModal">
         <div class="modal">
             <div class="modal-title">💰 Withdraw Funds</div>
-            <div class="modal-desc">Enter your wallet address and amount to withdraw.</div>
+            <div class="modal-desc">Enter your TON wallet address to receive your winnings.</div>
             
             <input type="text" class="modal-input" id="withdrawAddress" placeholder="Your TON wallet address">
-            <input type="number" class="modal-input" id="withdrawAmount" placeholder="Amount to withdraw">
+            
+            <p style="text-align: center; font-size: 14px; color: #4ade80; margin-bottom: 16px;">
+                Available: <span id="withdrawAvailable">$0.00</span>
+            </p>
             
             <button class="modal-btn modal-btn-success" onclick="processWithdraw()">
-                Withdraw Now
+                💸 Withdraw Now
             </button>
             
             <button class="modal-btn modal-btn-cancel" onclick="closeModal('withdrawModal')">
@@ -1015,26 +1191,25 @@
             isSpinning: false,
             wins: [],
             firstSpin: true,
-            totalWins: 0
+            hasWon: false,
+            currentRotation: 0
         };
 
         // ============ WHEEL CONFIG ============
         const SEGMENTS = [
-            { label: '500 USDT', value: 500, currency: 'usdt', color: '#f59e0b', prob: 1 },
-            { label: '10 TON', value: 10, currency: 'ton', color: '#06b6d4', prob: 3 },
-            { label: '0.01 BTC', value: 0.01, currency: 'btc', color: '#f97316', prob: 2 },
-            { label: '50 USDT', value: 50, currency: 'usdt', color: '#8b5cf6', prob: 8 },
-            { label: '5 TON', value: 5, currency: 'ton', color: '#10b981', prob: 10 },
-            { label: '25 USDT', value: 25, currency: 'usdt', color: '#ec4899', prob: 15 },
-            { label: '2 TON', value: 2, currency: 'ton', color: '#3b82f6', prob: 25 },
-            { label: '15 USDT', value: 15, currency: 'usdt', color: '#14b8a6', prob: 36 }
+            { label: '500 USDT', value: 500, currency: 'usdt', color: '#f59e0b', textColor: '#000' },
+            { label: '0.01 BTC', value: 0.01, currency: 'btc', color: '#f97316', textColor: '#fff' },
+            { label: '10 TON', value: 10, currency: 'ton', color: '#06b6d4', textColor: '#fff' },
+            { label: '50 USDT', value: 50, currency: 'usdt', color: '#8b5cf6', textColor: '#fff' },
+            { label: '5 TON', value: 5, currency: 'ton', color: '#10b981', textColor: '#fff' },
+            { label: '25 USDT', value: 25, currency: 'usdt', color: '#ec4899', textColor: '#fff' },
+            { label: '2 TON', value: 2, currency: 'ton', color: '#3b82f6', textColor: '#fff' },
+            { label: '15 USDT', value: 15, currency: 'usdt', color: '#14b8a6', textColor: '#fff' }
         ];
 
-        const FIRST_SPIN_REWARDS = [
-            { label: '25 USDT', value: 25, currency: 'usdt' },
-            { label: '5 TON', value: 5, currency: 'ton' },
-            { label: '30 USDT', value: 30, currency: 'usdt' }
-        ];
+        // First spin - indices of SEGMENTS that give good rewards (50 USDT, 5 TON, 25 USDT)
+        // These MUST match exact indices in SEGMENTS array so wheel lands correctly
+        const FIRST_SPIN_INDICES = [3, 4, 5]; // 50 USDT (index 3), 5 TON (index 4), 25 USDT (index 5)
 
         // ============ TELEGRAM INIT ============
         let tg = window.Telegram?.WebApp;
@@ -1046,7 +1221,7 @@
                 tg.ready();
                 tg.enableClosingConfirmation();
                 
-                document.body.style.backgroundColor = tg.backgroundColor || '#0f172a';
+                document.body.style.setProperty('--tg-theme-bg-color', tg.backgroundColor || '#0f172a');
                 tgUser = tg.initDataUnsafe?.user;
                 
                 if (tgUser) {
@@ -1068,7 +1243,7 @@
         }
 
         function showAlert(message) {
-            if (tg) tg.showAlert(message);
+            if (tg?.showAlert) tg.showAlert(message);
             else alert(message);
         }
 
@@ -1078,7 +1253,7 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = canvas.width / 2 - 5;
+            const radius = canvas.width / 2 - 2;
             const segmentAngle = (2 * Math.PI) / SEGMENTS.length;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1092,9 +1267,16 @@
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, endAngle);
                 ctx.closePath();
-                ctx.fillStyle = segment.color;
+                
+                // Gradient fill
+                const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+                gradient.addColorStop(0, lightenColor(segment.color, 20));
+                gradient.addColorStop(1, segment.color);
+                ctx.fillStyle = gradient;
                 ctx.fill();
-                ctx.strokeStyle = '#1e293b';
+                
+                // Border
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
@@ -1103,13 +1285,32 @@
                 ctx.translate(centerX, centerY);
                 ctx.rotate(startAngle + segmentAngle / 2);
                 ctx.textAlign = 'right';
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px Inter';
+                ctx.fillStyle = segment.textColor;
+                ctx.font = 'bold 13px Inter, sans-serif';
                 ctx.shadowColor = 'rgba(0,0,0,0.5)';
                 ctx.shadowBlur = 4;
-                ctx.fillText(segment.label, radius - 15, 4);
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+                ctx.fillText(segment.label, radius - 15, 5);
                 ctx.restore();
             });
+
+            // Inner circle shadow
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fill();
+        }
+
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
         }
 
         // ============ SPIN WHEEL ============
@@ -1124,7 +1325,7 @@
 
             STATE.isSpinning = true;
             STATE.spins--;
-            updateUI();
+            updateSpinButton();
             haptic('heavy');
 
             const btn = document.getElementById('spinBtn');
@@ -1132,78 +1333,168 @@
             btn.textContent = '🎰 SPINNING...';
             btn.classList.remove('animate-glow');
 
-            // Select reward
-            let reward;
+            // Select segment index FIRST, then get reward from SEGMENTS
+            let segmentIndex;
+            
             if (STATE.firstSpin) {
-                reward = FIRST_SPIN_REWARDS[Math.floor(Math.random() * FIRST_SPIN_REWARDS.length)];
+                // First spin always wins from predefined good segments
+                // FIRST_SPIN_INDICES = [3, 4, 5] which are: 50 USDT, 5 TON, 25 USDT
+                segmentIndex = FIRST_SPIN_INDICES[Math.floor(Math.random() * FIRST_SPIN_INDICES.length)];
                 STATE.firstSpin = false;
             } else {
-                const rand = Math.random() * 100;
-                let cumulative = 0;
-                for (const seg of SEGMENTS) {
-                    cumulative += seg.prob;
-                    if (rand <= cumulative) {
-                        reward = seg;
+                // Random weighted selection - lower index = rarer prize
+                const weights = [1, 2, 5, 10, 15, 25, 25, 17]; // Must match SEGMENTS length
+                const totalWeight = weights.reduce((a, b) => a + b, 0);
+                let random = Math.random() * totalWeight;
+                
+                for (let i = 0; i < SEGMENTS.length; i++) {
+                    random -= weights[i];
+                    if (random <= 0) {
+                        segmentIndex = i;
                         break;
                     }
                 }
+                
+                // Fallback safety
+                if (segmentIndex === undefined) segmentIndex = 5;
             }
 
-            // Calculate spin
-            const segmentIndex = SEGMENTS.findIndex(s => s.label === reward.label) || 0;
-            const segmentAngle = 360 / SEGMENTS.length;
-            const targetAngle = segmentIndex * segmentAngle + segmentAngle / 2;
-            const totalRotation = 1800 + (360 - targetAngle);
-
+            // Get reward directly from SEGMENTS using index - GUARANTEED MATCH!
+            const reward = SEGMENTS[segmentIndex];
+            
+            // Calculate spin - wheel pointer is at TOP (12 o'clock position)
+            // Segments are drawn starting from top and going clockwise
+            const segmentAngle = 360 / SEGMENTS.length; // 45 degrees per segment
+            
+            // Calculate where this segment's CENTER is (in degrees from top, clockwise)
+            const segmentCenterAngle = segmentIndex * segmentAngle + (segmentAngle / 2);
+            
+            // We need to rotate the wheel so this segment's center aligns with TOP (pointer)
+            // That means rotating (360 - segmentCenterAngle) degrees + full spins
+            const spins = 5 + Math.floor(Math.random() * 3); // 5-7 full rotations
+            const targetRotation = (spins * 360) + (360 - segmentCenterAngle);
+            
+            // Animate wheel
             const canvas = document.getElementById('wheelCanvas');
-            canvas.style.setProperty('--spin-deg', totalRotation + 'deg');
-            canvas.classList.add('animate-spin-wheel');
+            const startRotation = STATE.currentRotation;
+            const endRotation = startRotation + targetRotation;
+            const duration = 5000;
+            const startTime = Date.now();
 
-            setTimeout(() => {
-                canvas.classList.remove('animate-spin-wheel');
-                canvas.style.transform = `rotate(${totalRotation % 360}deg)`;
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
                 
-                STATE.isSpinning = false;
-                btn.disabled = false;
-
-                // Update balance
-                if (reward.currency === 'usdt') STATE.balance.usdt += reward.value;
-                else if (reward.currency === 'ton') STATE.balance.ton += reward.value;
-                else if (reward.currency === 'btc') STATE.balance.btc += reward.value;
-
-                STATE.wins.unshift({ prize: reward.label, time: new Date() });
-                STATE.totalWins++;
+                // Easing function (ease out cubic for smooth stop)
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const currentRotation = startRotation + (targetRotation * easeOut);
                 
-                updateUI();
-                showWinModal(reward.label);
-                createCoinRain();
-                haptic('success');
-
-                if (STATE.spins > 0) {
-                    btn.textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
-                    btn.classList.add('animate-glow');
-                } else {
-                    btn.textContent = '😢 No Spins Left!';
-                    document.getElementById('freeSpinBadge').style.display = 'none';
+                canvas.style.transform = `rotate(${currentRotation}deg)`;
+                
+                // Tick haptic feedback during spin
+                if (progress < 0.8 && elapsed % 100 < 50) {
+                    haptic('light');
                 }
-            }, 5000);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    STATE.currentRotation = endRotation % 360;
+                    finishSpin(reward);
+                }
+            }
+            
+            animate();
+        }
+
+        function finishSpin(reward) {
+            STATE.isSpinning = false;
+            
+            // Update balance
+            if (reward.currency === 'usdt') {
+                STATE.balance.usdt += reward.value;
+                highlightBalance('usdtBox');
+            } else if (reward.currency === 'ton') {
+                STATE.balance.ton += reward.value;
+                highlightBalance('tonBox');
+            } else if (reward.currency === 'btc') {
+                STATE.balance.btc += reward.value;
+                highlightBalance('btcBox');
+            }
+
+            // Record win
+            STATE.wins.unshift({ 
+                prize: reward.label, 
+                time: new Date(),
+                value: reward.value,
+                currency: reward.currency
+            });
+            
+            STATE.hasWon = true;
+            
+            updateUI();
+            showWinModal(reward.label);
+            createCoinRain();
+            haptic('success');
+        }
+
+        function highlightBalance(boxId) {
+            const box = document.getElementById(boxId);
+            box.classList.add('won');
+            setTimeout(() => box.classList.remove('won'), 2000);
+        }
+
+        function updateSpinButton() {
+            const btn = document.getElementById('spinBtn');
+            const badge = document.getElementById('freeSpinBadge');
+            
+            if (STATE.spins > 0) {
+                btn.disabled = false;
+                btn.textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
+                btn.classList.add('animate-glow');
+                badge.classList.remove('hidden');
+                document.getElementById('spinCount').textContent = STATE.spins;
+            } else {
+                btn.disabled = false;
+                btn.textContent = '😢 Get More Spins';
+                btn.classList.remove('animate-glow');
+                badge.classList.add('hidden');
+                btn.onclick = () => openModal('noSpinsModal');
+            }
+            
+            document.getElementById('spinsLeft').textContent = STATE.spins;
         }
 
         // ============ UI UPDATES ============
         function updateUI() {
+            // Balance
             document.getElementById('balanceUSDT').textContent = STATE.balance.usdt.toFixed(2);
             document.getElementById('balanceTON').textContent = STATE.balance.ton.toFixed(2);
             document.getElementById('balanceBTC').textContent = STATE.balance.btc.toFixed(6);
-            document.getElementById('spinsLeft').textContent = STATE.spins;
-            document.getElementById('spinCount').textContent = STATE.spins;
+            
+            // Calculate total in USD
+            const totalUSD = STATE.balance.usdt + (STATE.balance.ton * 7) + (STATE.balance.btc * 67000);
+            document.getElementById('totalWinnings').textContent = '$' + totalUSD.toFixed(2);
+            document.getElementById('withdrawAvailable').textContent = '$' + totalUSD.toFixed(2);
 
-            // Progress
-            document.getElementById('depositProgress').style.width = STATE.deposited ? '100%' : '0%';
-            document.getElementById('depositStatus').textContent = STATE.deposited ? '2/2 TON ✅' : '0/2 TON';
+            // Show unlock card ONLY after first win
+            if (STATE.hasWon) {
+                document.getElementById('unlockCard').classList.add('visible');
+                document.getElementById('moreSpinsCard').classList.add('visible');
+            }
+
+            // Progress bars
+            const depositFill = document.getElementById('depositProgress');
+            const inviteFill = document.getElementById('inviteProgress');
+            
+            depositFill.style.width = STATE.deposited ? '100%' : '0%';
+            depositFill.classList.toggle('complete', STATE.deposited);
+            document.getElementById('depositStatus').textContent = STATE.deposited ? '✅ Complete!' : '0/2 TON';
             document.getElementById('depositStatus').style.color = STATE.deposited ? '#4ade80' : '#ef4444';
 
-            document.getElementById('inviteProgress').style.width = STATE.invited ? '100%' : '0%';
-            document.getElementById('inviteStatus').textContent = STATE.invited ? '1/1 ✅' : '0/1 Friend';
+            inviteFill.style.width = STATE.invited ? '100%' : '0%';
+            inviteFill.classList.toggle('complete', STATE.invited);
+            document.getElementById('inviteStatus').textContent = STATE.invited ? '✅ Complete!' : '0/1 Friend';
             document.getElementById('inviteStatus').style.color = STATE.invited ? '#4ade80' : '#ef4444';
 
             // Withdraw button
@@ -1211,16 +1502,46 @@
             if (STATE.deposited && STATE.invited) {
                 withdrawBtn.classList.remove('locked');
                 withdrawBtn.classList.add('unlocked');
-                withdrawBtn.textContent = '💰 Withdraw Now';
+                withdrawBtn.textContent = '💰 Withdraw $' + totalUSD.toFixed(2) + ' Now!';
+            } else {
+                withdrawBtn.classList.add('locked');
+                withdrawBtn.classList.remove('unlocked');
+                
+                if (!STATE.deposited && !STATE.invited) {
+                    withdrawBtn.textContent = '🔒 Complete Both Steps to Withdraw';
+                } else if (!STATE.deposited) {
+                    withdrawBtn.textContent = '🔒 Deposit 2 TON to Withdraw';
+                } else {
+                    withdrawBtn.textContent = '🔒 Invite 1 Friend to Withdraw';
+                }
             }
 
-            // Wins list
-            const winsList = document.getElementById('winsList');
+            // Wins history
             if (STATE.wins.length > 0) {
-                winsList.innerHTML = STATE.wins.slice(0, 5).map(w => 
-                    `<div class="win-item">🎉 Won <span class="win-amount">${w.prize}</span></div>`
-                ).join('');
+                const winsCard = document.getElementById('winsCard');
+                winsCard.style.display = 'block';
+                
+                const winsList = document.getElementById('winsList');
+                winsList.innerHTML = STATE.wins.slice(0, 10).map(w => {
+                    const timeAgo = getTimeAgo(w.time);
+                    return `<div class="win-item">
+                        <span>🎉</span>
+                        <span>Won <span class="win-amount">${w.prize}</span></span>
+                        <span style="margin-left: auto; color: #64748b; font-size: 11px;">${timeAgo}</span>
+                    </div>`;
+                }).join('');
             }
+            
+            updateSpinButton();
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            return `${hours}h ago`;
         }
 
         // ============ MODALS ============
@@ -1236,39 +1557,91 @@
         function showWinModal(prize) {
             document.getElementById('winAmount').textContent = prize;
             
+            // Show near-miss sometimes to encourage more spins
             const nearMissBox = document.getElementById('nearMissBox');
-            if (Math.random() > 0.5 && !prize.includes('500')) {
+            const nearMissText = document.getElementById('nearMissText');
+            const withdrawTeaser = document.getElementById('withdrawTeaser');
+            
+            // Dynamic near-miss messages based on what they won
+            const nearMissMessages = [
+                '😱 SO CLOSE to 500 USDT JACKPOT!',
+                '🔥 Almost hit 0.01 BTC!',
+                '💎 Just missed 10 TON!',
+                '⭐ One segment away from 50 USDT!'
+            ];
+            
+            if (Math.random() > 0.4 && !prize.includes('500') && !prize.includes('0.01 BTC')) {
+                nearMissText.textContent = nearMissMessages[Math.floor(Math.random() * nearMissMessages.length)];
                 nearMissBox.style.display = 'block';
             } else {
                 nearMissBox.style.display = 'none';
             }
             
+            // Show withdraw teaser if has balance
+            withdrawTeaser.style.display = STATE.hasWon ? 'block' : 'none';
+            
             openModal('winModal');
+        }
+
+        function closeWinModal() {
+            closeModal('winModal');
+            
+            // Scroll to unlock card after closing win modal
+            if (STATE.hasWon) {
+                setTimeout(() => {
+                    document.getElementById('unlockCard').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }, 300);
+            }
         }
 
         // ============ ACTIONS ============
         function copyWallet() {
             const address = 'UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M';
-            navigator.clipboard.writeText(address);
-            showAlert('✅ Wallet address copied!');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address);
+            } else {
+                const input = document.createElement('input');
+                input.value = address;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            }
+            
+            showAlert('✅ Wallet address copied! Send exactly 2 TON.');
             haptic('success');
         }
 
         function copyRefLink() {
             const link = document.getElementById('refLink').textContent;
-            navigator.clipboard.writeText(link);
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(link);
+            } else {
+                const input = document.createElement('input');
+                input.value = link;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            }
+            
             showAlert('✅ Referral link copied!');
             haptic('success');
         }
 
         function shareOnTelegram() {
-            const userId = tgUser?.id || 'USER123';
+            const userId = tgUser?.id || Math.random().toString(36).substr(2, 9);
             const refLink = `https://t.me/TonSpinBot/play?start=ref_${userId}`;
-            const text = '🎰 I just won FREE crypto on TonSpin! Get your FREE spin now!';
+            const text = `🎰 I just won FREE crypto on TonSpin!\n\n💰 Get your FREE spin and win USDT, TON, BTC!\n\n👉 Click to play:`;
             
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(text)}`;
             
-            if (tg) {
+            if (tg?.openTelegramLink) {
                 tg.openTelegramLink(shareUrl);
             } else {
                 window.open(shareUrl, '_blank');
@@ -1276,29 +1649,27 @@
             
             closeModal('inviteModal');
             
+            // Simulate friend joining after share
             setTimeout(() => {
                 STATE.invited = true;
-                STATE.spins += 5;
+                STATE.spins += 10;
                 updateUI();
-                showAlert('✅ Friend invited! +5 Spins added!');
+                showAlert('🎉 Friend invited! +10 Spins added!');
                 haptic('success');
             }, 2000);
         }
 
         function confirmDeposit() {
             closeModal('depositModal');
-            showAlert('⏳ Verifying deposit... Please wait 1-2 minutes.');
+            showAlert('⏳ Verifying your deposit... Please wait 1-2 minutes.');
             
+            // Simulate deposit verification
             setTimeout(() => {
                 STATE.deposited = true;
-                STATE.spins += 20;
+                STATE.spins += 25;
                 updateUI();
-                showAlert('✅ Deposit verified! +20 Spins added!');
+                showAlert('✅ Deposit verified! +25 Spins added to your account!');
                 haptic('success');
-                
-                document.getElementById('spinBtn').textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
-                document.getElementById('spinBtn').classList.add('animate-glow');
-                document.getElementById('freeSpinBadge').style.display = 'flex';
             }, 3000);
         }
 
@@ -1307,14 +1678,34 @@
             updateUI();
             showAlert('✅ Daily bonus claimed! +1 Spin added!');
             haptic('success');
+        }
+
+        function joinTelegram() {
+            if (tg?.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TonSpinChannel');
+            } else {
+                window.open('https://t.me/TonSpinChannel', '_blank');
+            }
             
-            document.getElementById('spinBtn').textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
-            document.getElementById('spinBtn').classList.add('animate-glow');
+            setTimeout(() => {
+                STATE.spins += 3;
+                updateUI();
+                showAlert('✅ Thanks for joining! +3 Spins added!');
+                haptic('success');
+            }, 2000);
         }
 
         function handleWithdraw() {
             if (!STATE.deposited || !STATE.invited) {
-                showAlert('❌ Complete both tasks to unlock withdrawals!');
+                if (!STATE.deposited && !STATE.invited) {
+                    showAlert('❌ Please complete both steps: Deposit 2 TON and Invite 1 Friend');
+                } else if (!STATE.deposited) {
+                    showAlert('❌ Please deposit 2 TON to unlock withdrawals');
+                    openModal('depositModal');
+                } else {
+                    showAlert('❌ Please invite 1 friend to unlock withdrawals');
+                    openModal('inviteModal');
+                }
                 haptic('error');
                 return;
             }
@@ -1322,45 +1713,58 @@
         }
 
         function processWithdraw() {
-            const address = document.getElementById('withdrawAddress').value;
-            const amount = document.getElementById('withdrawAmount').value;
+            const address = document.getElementById('withdrawAddress').value.trim();
             
-            if (!address || !amount) {
-                showAlert('❌ Please fill in all fields');
+            if (!address) {
+                showAlert('❌ Please enter your TON wallet address');
+                haptic('error');
+                return;
+            }
+            
+            if (!address.startsWith('UQ') && !address.startsWith('EQ')) {
+                showAlert('❌ Please enter a valid TON wallet address');
                 haptic('error');
                 return;
             }
             
             closeModal('withdrawModal');
-            showAlert('✅ Withdrawal submitted! Processing within 24 hours.');
+            showAlert('✅ Withdrawal submitted successfully!\n\nYour funds will arrive within 24 hours.');
             haptic('success');
         }
 
         // ============ EFFECTS ============
         function createCoinRain() {
-            const emojis = ['💰', '💵', '🪙', '💎', '✨', '🎉'];
-            for (let i = 0; i < 25; i++) {
+            const emojis = ['💰', '💵', '🪙', '💎', '✨', '🎉', '💲', '🏆'];
+            
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const coin = document.createElement('div');
                     coin.className = 'coin';
                     coin.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    coin.style.left = Math.random() * 100 + 'vw';
-                    coin.style.animationDuration = (2 + Math.random()) + 's';
+                    coin.style.left = (Math.random() * 100) + 'vw';
+                    coin.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+                    coin.style.fontSize = (20 + Math.random() * 20) + 'px';
                     document.body.appendChild(coin);
-                    setTimeout(() => coin.remove(), 3000);
-                }, i * 80);
+                    
+                    setTimeout(() => coin.remove(), 4000);
+                }, i * 60);
             }
         }
 
         function startCountdown() {
-            let time = 899;
-            setInterval(() => {
+            let time = 899; // 14:59
+            
+            function update() {
                 const mins = Math.floor(time / 60);
                 const secs = time % 60;
                 document.getElementById('countdown').textContent = 
                     `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                time = time > 0 ? time - 1 : 899;
-            }, 1000);
+                
+                time = time > 0 ? time - 1 : 899; // Reset after reaching 0
+            }
+            
+            update();
+            setInterval(update, 1000);
         }
 
         // ============ INIT ============
@@ -1369,6 +1773,11 @@
             drawWheel();
             startCountdown();
             updateUI();
+            
+            // Preload animations
+            setTimeout(() => {
+                document.getElementById('freeSpinBadge').classList.add('animate-shake');
+            }, 1000);
         });
     </script>
 </body>
