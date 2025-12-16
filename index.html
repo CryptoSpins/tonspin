@@ -3,164 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TonSpin - Free Crypto Spin Game | Win TON, USDT, BTC Daily Rewards</title>
-    <meta name="description" content="🎰 Spin FREE & win real crypto! Earn TON, USDT, Bitcoin instantly. 100% FREE first spin. Join 150,000+ players winning daily crypto rewards on Telegram!">
-    <meta name="keywords" content="free crypto, spin to earn, win USDT, TON rewards, crypto games, earn bitcoin, telegram games, TON blockchain, free TON, win crypto, telegram mini app, free spin, crypto wheel">
-    <meta property="og:title" content="TonSpin - Win Free Crypto Every Spin! 🎰">
-    <meta property="og:description" content="Get your FREE spin now! Win TON, USDT, BTC & more. 150,000+ users already winning daily!">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+    <title>TonSpin Elite - Free Crypto Spin Game | Win TON, USDT, BTC Daily Rewards</title>
+    <meta name="description" content="🎰 Spin FREE & win real crypto! Earn TON, USDT, Bitcoin instantly. 100% FREE first spin. Join 250,000+ players winning daily crypto rewards on Telegram!">
+    <meta name="keywords" content="free crypto, spin to earn, win USDT, TON rewards, crypto games, earn bitcoin, telegram games, TON blockchain, free TON, win crypto, telegram mini app">
+    <meta property="og:title" content="TonSpin Elite - Win Free Crypto Every Spin! 🎰">
+    <meta property="og:description" content="Get your FREE spin now! Win TON, USDT, BTC & more. 250,000+ users already winning daily!">
+    <meta name="theme-color" content="#0a0a1a">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
         
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7c3aed;
+            --accent: #fbbf24;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gold: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b, #fbbf24);
+            --neon-blue: 0 0 20px rgba(0, 212, 255, 0.5);
+            --neon-purple: 0 0 20px rgba(124, 58, 237, 0.5);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            background: #0a0a1a;
             min-height: 100vh;
             color: white;
             overflow-x: hidden;
         }
         
+        /* Animated Background */
+        .bg-effects {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 50%);
+        }
+        
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .floating-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 212, 255, 0.15);
+            top: -200px;
+            left: -200px;
+        }
+        
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(124, 58, 237, 0.1);
+            bottom: -250px;
+            right: -250px;
+            animation-delay: -10s;
+        }
+        
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(251, 191, 36, 0.08);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -5s;
+        }
+        
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
         /* Animations */
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
         
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(34, 211, 238, 0.5), 0 0 80px rgba(34, 211, 238, 0.3); }
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.3); }
+        }
+        
+        @keyframes goldGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.5), 0 0 40px rgba(251, 191, 36, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.8), 0 0 80px rgba(251, 191, 36, 0.4); }
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
         }
         
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-4px) rotate(-1deg); }
-            40% { transform: translateX(4px) rotate(1deg); }
-            60% { transform: translateX(-4px) rotate(-1deg); }
-            80% { transform: translateX(4px) rotate(1deg); }
+            0%, 100% { transform: translateX(0) rotate(0); }
+            20% { transform: translateX(-3px) rotate(-1deg); }
+            40% { transform: translateX(3px) rotate(1deg); }
+            60% { transform: translateX(-3px) rotate(-1deg); }
+            80% { transform: translateX(3px) rotate(1deg); }
         }
         
         @keyframes coinDrop {
             0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(1080deg); opacity: 0; }
         }
         
         @keyframes slideUp {
-            from { transform: translateY(100px); opacity: 0; }
+            from { transform: translateY(40px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         
         @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-200%); }
-        }
-        
-        @keyframes urgencyPulse {
-            0%, 100% { background: linear-gradient(90deg, #dc2626, #ef4444); }
-            50% { background: linear-gradient(90deg, #ef4444, #f87171); }
-        }
-        
-        @keyframes wheelSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(var(--spin-to, 1800deg)); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         
         @keyframes bounceIn {
             0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); opacity: 1; }
         }
         
-        @keyframes glowPulse {
-            0%, 100% { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.8)); }
-            50% { filter: drop-shadow(0 0 25px rgba(251, 191, 36, 1)); }
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
         
-        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
-        .animate-glow { animation: glow 2s ease-in-out infinite; }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        .animate-shake { animation: shake 0.6s ease-in-out infinite; }
-        .animate-slideIn { animation: slideIn 0.5s ease-out forwards; }
-        .animate-slideUp { animation: slideUp 0.6s ease-out forwards; }
-        .animate-bounceIn { animation: bounceIn 0.5s ease-out forwards; }
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(0, 212, 255, 0.8), 0 0 60px rgba(0, 212, 255, 0.4); }
+        }
         
         /* Layout */
         .container {
-            max-width: 420px;
+            max-width: 440px;
             margin: 0 auto;
-            padding: 0 16px 100px;
+            padding: 0 16px 120px;
+            position: relative;
+            z-index: 1;
         }
         
         /* Live Ticker */
         .ticker-wrap {
-            background: linear-gradient(90deg, #059669, #0891b2);
-            padding: 10px 0;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.9), rgba(0, 212, 255, 0.9));
+            padding: 12px 0;
             overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
         .ticker {
             display: flex;
-            gap: 40px;
+            gap: 60px;
             white-space: nowrap;
-            animation: ticker 20s linear infinite;
+            animation: ticker 25s linear infinite;
         }
         
         .ticker-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 13px;
             font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .ticker-item b {
+            color: #fef3c7;
         }
         
         /* Urgency Banner */
         .urgency-banner {
-            animation: urgencyPulse 1.5s ease-in-out infinite;
-            padding: 12px;
+            background: linear-gradient(90deg, #dc2626, #ef4444, #dc2626);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+            padding: 14px;
             text-align: center;
             font-weight: 700;
             font-size: 14px;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
-        /* Cards */
-        .card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.1);
+        .urgency-banner span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .countdown {
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
+            font-family: 'Space Grotesk', monospace;
+            font-weight: 700;
+        }
+        
+        /* Glass Cards */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
         
         .card.hidden {
             display: none;
         }
         
-        .card.highlight {
-            border: 2px solid #f59e0b;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+        .card.premium {
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(255, 255, 255, 0.03));
+        }
+        
+        .card.premium::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 28px 0 20px;
+        }
+        
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .logo-icon {
+            font-size: 42px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+        }
+        
+        .logo {
+            font-size: 38px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #fbbf24);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+            letter-spacing: -1px;
+        }
+        
+        .tagline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .tagline-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tagline-stat .dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #4ade80;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
         }
         
         /* Balance Grid */
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .balance-title {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
         .balance-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -168,70 +379,176 @@
         }
         
         .balance-item {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 16px;
-            padding: 16px 8px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px 12px;
             text-align: center;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .balance-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .balance-item:hover::before {
+            opacity: 1;
         }
         
         .balance-item.won {
             animation: bounceIn 0.5s ease-out;
-            border: 1px solid #4ade80;
+            border-color: rgba(74, 222, 128, 0.5);
+            box-shadow: 0 0 30px rgba(74, 222, 128, 0.2);
         }
         
         .balance-icon {
-            font-size: 28px;
-            margin-bottom: 8px;
+            font-size: 32px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
         
         .balance-value {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 4px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
             transition: all 0.3s;
         }
         
-        .balance-value.increase {
-            animation: bounceIn 0.3s ease-out;
-            color: #4ade80 !important;
-        }
+        .balance-value.usdt { color: #4ade80; }
+        .balance-value.ton { color: #00d4ff; }
+        .balance-value.btc { color: #f59e0b; }
         
         .balance-label {
-            font-size: 11px;
-            color: #94a3b8;
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
         
-        /* Wheel */
+        /* Free Spin Banner */
+        .free-spin-banner {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: shake 3s ease-in-out infinite;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+        }
+        
+        .free-spin-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s linear infinite;
+        }
+        
+        .free-spin-banner.hidden {
+            display: none;
+        }
+        
+        .free-spin-text {
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .free-spin-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 16px;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', monospace;
+        }
+        
+        /* Wheel Section */
         .wheel-section {
             position: relative;
-            padding: 30px 20px;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .wheel-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .wheel-title h2 {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+        
+        .wheel-title p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
         }
         
         .wheel-container {
             position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 0 auto;
+            width: 300px;
+            height: 300px;
         }
         
         .wheel-glow {
             position: absolute;
-            inset: -30px;
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+            inset: -50px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 60%);
             border-radius: 50%;
-            filter: blur(20px);
-            animation: glowPulse 2s ease-in-out infinite;
+            filter: blur(30px);
+            animation: pulse 3s ease-in-out infinite;
         }
         
-        .wheel-outer {
+        .wheel-outer-ring {
             position: absolute;
-            inset: -8px;
+            inset: -12px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706, #fbbf24);
-            padding: 8px;
+            background: linear-gradient(135deg, #fef3c7, #fbbf24, #d97706, #fbbf24, #fef3c7);
+            padding: 6px;
+            box-shadow: 
+                0 0 40px rgba(251, 191, 36, 0.5),
+                inset 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        .wheel-outer-ring::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: 50%;
+            border: 3px solid rgba(0,0,0,0.2);
+        }
+        
+        .wheel-inner-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #1a1a2e;
+            padding: 4px;
         }
         
         .wheel {
@@ -240,7 +557,7 @@
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.6);
         }
         
         #wheelCanvas {
@@ -254,26 +571,29 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(145deg, #1e1e3a, #0a0a1a);
             border: 4px solid #fbbf24;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 32px;
             z-index: 10;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.5),
+                inset 0 2px 10px rgba(255,255,255,0.1),
+                0 0 20px rgba(251, 191, 36, 0.3);
         }
         
         .wheel-pointer {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
         }
         
         .wheel-pointer::before {
@@ -281,43 +601,50 @@
             display: block;
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 35px solid #fbbf24;
+            border-left: 24px solid transparent;
+            border-right: 24px solid transparent;
+            border-top: 45px solid #fbbf24;
         }
         
         .wheel-pointer::after {
             content: '';
             position: absolute;
-            top: 5px;
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 20px solid #f59e0b;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 28px solid #f59e0b;
         }
         
-        /* Buttons */
-        .btn-primary {
+        /* Spin Button */
+        .spin-btn-container {
             width: 100%;
-            padding: 20px 24px;
-            border: none;
-            border-radius: 16px;
-            font-size: 20px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
+            padding: 0 20px;
         }
         
         .btn-spin {
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            width: 100%;
+            padding: 22px 32px;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
             color: white;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+        }
+        
+        .btn-spin.glow {
+            animation: glow 2s ease-in-out infinite;
         }
         
         .btn-spin::before {
@@ -327,8 +654,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
         }
         
         .btn-spin:hover::before {
@@ -336,8 +663,12 @@
         }
         
         .btn-spin:not(:disabled):hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-spin:not(:disabled):active {
+            transform: translateY(-1px);
         }
         
         .btn-spin:disabled {
@@ -345,61 +676,32 @@
             cursor: not-allowed;
         }
         
-        .btn-secondary {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-        
-        .btn-tertiary {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            color: white;
-        }
-        
-        .btn-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .btn-grid button {
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .btn-grid button:active {
-            transform: scale(0.98);
-        }
-        
-        /* Free Spin Badge */
-        .free-spin-badge {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            border-radius: 14px;
-            padding: 16px 20px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 16px;
+        .btn-spin-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
         }
         
-        .free-spin-badge.hidden {
-            display: none;
+        /* Spins Counter */
+        .spins-counter {
+            text-align: center;
+            padding: 16px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
         }
         
-        /* Unlock Card - Hidden by Default */
+        .spins-counter span {
+            color: #00d4ff;
+            font-weight: 700;
+            font-family: 'Space Grotesk', monospace;
+        }
+        
+        /* Unlock Card */
         .unlock-card {
             display: none;
-            border: 2px solid #f59e0b;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(30, 41, 59, 0.9));
         }
         
         .unlock-card.visible {
@@ -409,112 +711,222 @@
         
         .unlock-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .unlock-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            animation: float 3s ease-in-out infinite;
         }
         
         .unlock-header h3 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
-            color: #fbbf24;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 8px;
         }
         
         .unlock-header p {
             font-size: 14px;
-            color: #94a3b8;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
         }
         
-        .unlock-amount {
+        .winnings-display {
             text-align: center;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(145deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
         }
         
-        .unlock-amount-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 8px;
+        .winnings-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
         }
         
-        .unlock-amount-value {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #4ade80, #22d3ee);
+        .winnings-amount {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4ade80, #00d4ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: textGlow 2s ease-in-out infinite;
         }
         
-        /* Progress Section */
-        .progress-item {
+        /* Progress Steps */
+        .progress-step {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 16px;
         }
         
-        .progress-header {
+        .progress-step-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 12px;
         }
         
-        .progress-bar {
-            height: 12px;
-            background: rgba(51, 65, 85, 0.8);
+        .progress-step-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .progress-step-title .icon {
+            font-size: 24px;
+        }
+        
+        .progress-step-status {
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', monospace;
+        }
+        
+        .progress-step-status.pending { color: #ef4444; }
+        .progress-step-status.complete { color: #4ade80; }
+        
+        .progress-bar-container {
+            height: 10px;
+            background: rgba(0,0,0,0.3);
             border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s linear infinite;
+        }
+        
+        .progress-bar-fill.complete {
+            background: linear-gradient(90deg, #10b981, #4ade80);
+        }
+        
+        .progress-step-hint {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .btn-action {
+            padding: 18px 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
             overflow: hidden;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
-            border-radius: 10px;
-            transition: width 0.5s ease;
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        .progress-fill.complete {
-            background: linear-gradient(90deg, #10b981, #4ade80);
+        .btn-action:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-deposit {
+            background: linear-gradient(135deg, #00d4ff, #0891b2);
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
+        }
+        
+        .btn-invite {
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            color: white;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+        
+        .btn-action-icon {
+            font-size: 24px;
         }
         
         /* Withdraw Button */
         .btn-withdraw {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             border: none;
-            border-radius: 14px;
+            border-radius: 16px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 16px;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .btn-withdraw.locked {
-            background: #334155;
-            color: #64748b;
+            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.4);
             cursor: not-allowed;
         }
         
         .btn-withdraw.unlocked {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            animation: glow 2s ease-in-out infinite;
+            animation: goldGlow 2s ease-in-out infinite;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
         }
         
-        /* Spins Counter */
-        .spins-counter {
-            text-align: center;
-            padding: 12px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-        
-        .spins-counter span {
-            color: #22d3ee;
-            font-weight: 700;
+        .btn-withdraw.unlocked:hover {
+            transform: translateY(-2px);
         }
         
         /* Get More Spins */
@@ -524,95 +936,188 @@
         
         .more-spins-card.visible {
             display: block;
-            animation: slideUp 0.6s ease-out;
+            animation: slideUp 0.6s ease-out 0.2s backwards;
+        }
+        
+        .more-spins-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .more-spins-title h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        
+        .more-spins-title p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
         }
         
         .task-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 10px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        
+        .task-item:hover {
+            border-color: rgba(255,255,255,0.15);
         }
         
         .task-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
         }
         
         .task-icon {
-            font-size: 20px;
+            font-size: 28px;
+        }
+        
+        .task-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .task-details p {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
         }
         
         .task-reward {
-            background: rgba(34, 211, 238, 0.2);
-            color: #22d3ee;
-            padding: 6px 12px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+            padding: 8px 14px;
+            border-radius: 10px;
             font-size: 12px;
             font-weight: 700;
+            font-family: 'Space Grotesk', monospace;
         }
         
         .task-btn {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .task-btn:hover {
+            transform: scale(1.05);
         }
         
         /* Recent Wins */
+        .wins-card {
+            display: none;
+        }
+        
+        .wins-card.visible {
+            display: block;
+            animation: slideUp 0.6s ease-out 0.3s backwards;
+        }
+        
+        .wins-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .wins-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
         .wins-list {
-            max-height: 150px;
+            max-height: 180px;
             overflow-y: auto;
         }
         
         .win-item {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 13px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
         
-        .win-amount {
-            color: #fbbf24;
+        .win-item-icon {
+            font-size: 24px;
+        }
+        
+        .win-item-details {
+            flex: 1;
+        }
+        
+        .win-item-amount {
             font-weight: 700;
+            color: #fbbf24;
+            font-family: 'Space Grotesk', monospace;
         }
         
-        /* Trust Badges */
-        .trust-badges {
+        .win-item-time {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+        }
+        
+        /* Trust Section */
+        .trust-section {
             display: flex;
-            justify-content: center;
-            gap: 24px;
-            padding: 20px 0;
+            justify-content: space-around;
+            padding: 24px 0;
+            margin-top: 20px;
         }
         
-        .trust-badge {
+        .trust-item {
             text-align: center;
         }
         
-        .trust-badge-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
+        .trust-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
         }
         
-        .trust-badge-text {
+        .trust-text {
             font-size: 10px;
-            color: #64748b;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        /* Modal */
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 0;
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+        }
+        
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -630,78 +1135,105 @@
         }
         
         .modal {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 24px;
-            padding: 28px;
-            max-width: 360px;
+            background: linear-gradient(145deg, #1a1a3a, #0a0a1a);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 380px;
             width: 100%;
-            animation: slideIn 0.3s ease-out;
+            animation: slideUp 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modal::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .modal-icon {
+            text-align: center;
+            font-size: 72px;
+            margin-bottom: 16px;
+            animation: bounceIn 0.5s ease-out;
         }
         
         .modal-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             text-align: center;
             margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .modal-desc {
-            color: #94a3b8;
+            color: rgba(255,255,255,0.6);
             text-align: center;
             font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            margin-bottom: 24px;
+            line-height: 1.6;
         }
         
         .modal-input {
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 12px;
-            padding: 14px 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 16px 18px;
             color: white;
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
         }
         
         .modal-input:focus {
             outline: none;
-            border-color: #22d3ee;
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
         
-        .wallet-box {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(34, 211, 238, 0.3);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 16px;
+        .wallet-display {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
         }
         
         .wallet-label {
-            font-size: 11px;
-            color: #64748b;
-            margin-bottom: 6px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
         
         .wallet-address {
             font-size: 11px;
-            color: #22d3ee;
+            color: #00d4ff;
             word-break: break-all;
-            font-family: monospace;
+            font-family: 'Space Grotesk', monospace;
+            line-height: 1.5;
         }
         
         .modal-btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
         .modal-btn:active {
@@ -709,7 +1241,7 @@
         }
         
         .modal-btn-primary {
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
             color: white;
         }
         
@@ -719,67 +1251,63 @@
         }
         
         .modal-btn-cancel {
-            background: #334155;
-            color: #94a3b8;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
         }
         
-        /* Win Modal Special */
-        .win-modal-icon {
-            font-size: 80px;
-            text-align: center;
-            margin-bottom: 16px;
-            animation: bounceIn 0.5s ease-out;
-        }
-        
+        /* Win Modal */
         .win-modal-amount {
-            font-size: 42px;
-            font-weight: 900;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 48px;
+            font-weight: 700;
             text-align: center;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 8px;
+            animation: bounceIn 0.5s ease-out 0.2s backwards;
         }
         
-        .withdraw-teaser {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
-            border: 1px solid #10b981;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 16px 0;
+        .withdraw-hint {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 14px;
+            padding: 18px;
+            margin: 20px 0;
             text-align: center;
         }
         
-        .withdraw-teaser p:first-child {
+        .withdraw-hint-title {
             color: #4ade80;
             font-weight: 700;
             font-size: 15px;
             margin-bottom: 4px;
         }
         
-        .withdraw-teaser p:last-child {
-            color: #94a3b8;
+        .withdraw-hint-text {
+            color: rgba(255,255,255,0.5);
             font-size: 12px;
         }
         
-        .near-miss-box {
-            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(239, 68, 68, 0.2));
-            border: 1px solid #f97316;
-            border-radius: 12px;
-            padding: 14px;
-            margin: 16px 0;
+        .near-miss-hint {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(239, 68, 68, 0.1));
+            border: 1px solid rgba(251, 146, 60, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin: 20px 0;
             text-align: center;
         }
         
-        .near-miss-box p:first-child {
+        .near-miss-hint-title {
             color: #fb923c;
             font-weight: 700;
             font-size: 15px;
         }
         
-        .near-miss-box p:last-child {
-            color: #94a3b8;
+        .near-miss-hint-text {
+            color: rgba(255,255,255,0.5);
             font-size: 12px;
             margin-top: 4px;
         }
@@ -787,72 +1315,41 @@
         /* Coin Rain */
         .coin {
             position: fixed;
-            font-size: 28px;
-            animation: coinDrop 2.5s linear forwards;
+            font-size: 32px;
+            animation: coinDrop 3s linear forwards;
             pointer-events: none;
             z-index: 2000;
         }
         
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            font-size: 36px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #22d3ee, #a855f7, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
-        }
-        
-        .tagline {
-            font-size: 13px;
-            color: #22d3ee;
-            margin-top: 4px;
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px 0;
-            color: #475569;
-            font-size: 11px;
-        }
-        
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        
         /* Responsive */
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
             .wheel-container {
-                width: 240px;
-                height: 240px;
+                width: 260px;
+                height: 260px;
             }
             .balance-value {
-                font-size: 16px;
+                font-size: 18px;
+            }
+            .logo {
+                font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Live Winners Ticker - Shows actual wheel prizes -->
+    <!-- Background Effects -->
+    <div class="bg-effects">
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+    </div>
+
+    <!-- Live Winners Ticker -->
     <div class="ticker-wrap">
         <div class="ticker" id="ticker">
-            <div class="ticker-item">🎉 Alex***89 won <b>50 USDT</b> just now!</div>
+            <div class="ticker-item">🎉 Alex***89 just won <b>50 USDT</b></div>
             <div class="ticker-item">💎 Kim***23 won <b>5 TON</b></div>
             <div class="ticker-item">🚀 Max***56 won <b>0.01 BTC</b></div>
             <div class="ticker-item">⭐ Sara***12 won <b>25 USDT</b></div>
@@ -860,59 +1357,82 @@
             <div class="ticker-item">💰 Emma***34 won <b>15 USDT</b></div>
             <div class="ticker-item">🏆 David***90 won <b>500 USDT</b> JACKPOT!</div>
             <div class="ticker-item">✨ Lisa***45 won <b>2 TON</b></div>
+            <div class="ticker-item">🎉 Alex***89 just won <b>50 USDT</b></div>
+            <div class="ticker-item">💎 Kim***23 won <b>5 TON</b></div>
+            <div class="ticker-item">🚀 Max***56 won <b>0.01 BTC</b></div>
+            <div class="ticker-item">⭐ Sara***12 won <b>25 USDT</b></div>
         </div>
     </div>
 
     <!-- Urgency Banner -->
-    <div class="urgency-banner" id="urgencyBanner">
-        ⚡ BONUS HOUR: <span id="countdown">14:59</span> left for 2X REWARDS! ⚡
+    <div class="urgency-banner">
+        <span>⚡ MEGA BONUS ACTIVE: <span class="countdown" id="countdown">14:59</span> remaining for 3X REWARDS! ⚡</span>
     </div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="logo">💎 TONSPIN</div>
-            <div class="tagline">🌟 152,847 Players • $5.7M Paid Out 🌟</div>
+            <div class="logo-container">
+                <span class="logo-icon">💎</span>
+                <span class="logo">TONSPIN</span>
+            </div>
+            <div class="tagline">
+                <div class="tagline-stat">
+                    <span class="dot"></span>
+                    <span>254,892 Players</span>
+                </div>
+                <span>•</span>
+                <span>$8.2M Paid Out</span>
+            </div>
         </div>
 
         <!-- Balance Card -->
         <div class="card" id="balanceCard">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <span style="color: #94a3b8; font-size: 14px;">Your Balance</span>
-                <div class="status-badge">✓ VERIFIED</div>
+            <div class="balance-header">
+                <span class="balance-title">Your Wallet</span>
+                <div class="status-badge">VERIFIED</div>
             </div>
             <div class="balance-grid">
                 <div class="balance-item" id="usdtBox">
                     <div class="balance-icon">💵</div>
-                    <div class="balance-value" style="color: #4ade80;" id="balanceUSDT">0.00</div>
+                    <div class="balance-value usdt" id="balanceUSDT">0.00</div>
                     <div class="balance-label">USDT</div>
                 </div>
                 <div class="balance-item" id="tonBox">
                     <div class="balance-icon">💎</div>
-                    <div class="balance-value" style="color: #22d3ee;" id="balanceTON">0.00</div>
+                    <div class="balance-value ton" id="balanceTON">0.00</div>
                     <div class="balance-label">TON</div>
                 </div>
                 <div class="balance-item" id="btcBox">
                     <div class="balance-icon">₿</div>
-                    <div class="balance-value" style="color: #fb923c;" id="balanceBTC">0.000000</div>
+                    <div class="balance-value btc" id="balanceBTC">0.000000</div>
                     <div class="balance-label">BTC</div>
                 </div>
             </div>
         </div>
 
-        <!-- Free Spin Badge -->
-        <div class="free-spin-badge animate-shake" id="freeSpinBadge">
-            🎁 You have <span id="spinCount">1</span> FREE SPIN waiting! Claim it now!
+        <!-- Free Spin Banner -->
+        <div class="free-spin-banner" id="freeSpinBanner">
+            <div class="free-spin-text">
+                🎁 You have <span class="free-spin-count" id="spinCount">1</span> FREE SPIN waiting!
+            </div>
         </div>
 
-        <!-- Spin Wheel -->
+        <!-- Wheel Section -->
         <div class="card wheel-section">
+            <div class="wheel-title">
+                <h2>Spin & Win Instantly</h2>
+                <p>Win up to 500 USDT every spin!</p>
+            </div>
+            
             <div class="wheel-container">
                 <div class="wheel-glow"></div>
                 <div class="wheel-pointer"></div>
-                <div class="wheel-outer">
-                    <div class="wheel" id="wheelWrapper">
-                        <canvas id="wheelCanvas" width="280" height="280"></canvas>
+                <div class="wheel-outer-ring">
+                    <div class="wheel-inner-ring">
+                        <div class="wheel" id="wheelWrapper">
+                            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                        </div>
                     </div>
                 </div>
                 <div class="wheel-center">🎰</div>
@@ -920,85 +1440,109 @@
         </div>
 
         <!-- Spin Button -->
-        <button class="btn-primary btn-spin animate-glow" id="spinBtn" onclick="spinWheel()">
-            🎰 SPIN NOW - IT'S FREE!
-        </button>
+        <div class="spin-btn-container">
+            <button class="btn-spin glow" id="spinBtn" onclick="spinWheel()">
+                <div class="btn-spin-content">
+                    <span>🎰</span>
+                    <span>SPIN NOW — IT'S FREE!</span>
+                </div>
+            </button>
+        </div>
 
         <!-- Spins Counter -->
         <div class="spins-counter">
             Spins Available: <span id="spinsLeft">1</span>
         </div>
 
-        <!-- UNLOCK CARD - Hidden until first win -->
-        <div class="card unlock-card" id="unlockCard">
+        <!-- Unlock Card (Hidden until first win) -->
+        <div class="card premium unlock-card" id="unlockCard">
             <div class="unlock-header">
-                <h3>🔓 Withdraw Your Winnings!</h3>
-                <p>Complete 2 simple steps to unlock instant withdrawals</p>
+                <div class="unlock-icon">💰</div>
+                <h3>Unlock Your Winnings!</h3>
+                <p>Complete 2 simple steps to withdraw your crypto instantly</p>
             </div>
             
-            <div class="unlock-amount">
-                <div class="unlock-amount-label">Your Total Winnings</div>
-                <div class="unlock-amount-value" id="totalWinnings">$0.00</div>
+            <div class="winnings-display">
+                <div class="winnings-label">Total Winnings</div>
+                <div class="winnings-amount" id="totalWinnings">$0.00</div>
             </div>
             
-            <div class="progress-item">
-                <div class="progress-header">
-                    <span>💎 Step 1: Deposit 2 TON</span>
-                    <span id="depositStatus" style="color: #ef4444;">0/2 TON</span>
+            <div class="progress-step">
+                <div class="progress-step-header">
+                    <div class="progress-step-title">
+                        <span class="icon">💎</span>
+                        <span>Step 1: Verify with 2 TON</span>
+                    </div>
+                    <span class="progress-step-status pending" id="depositStatus">0/2 TON</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="depositProgress" style="width: 0%;"></div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="depositProgress" style="width: 0%;"></div>
                 </div>
-                <p style="font-size: 11px; color: #64748b; margin-top: 6px;">
-                    Verification deposit • Returned with your winnings
-                </p>
+                <div class="progress-step-hint">
+                    <span>ℹ️</span>
+                    <span>Refunded with your first withdrawal</span>
+                </div>
             </div>
             
-            <div class="progress-item">
-                <div class="progress-header">
-                    <span>👥 Step 2: Invite 1 Friend</span>
-                    <span id="inviteStatus" style="color: #ef4444;">0/1 Friend</span>
+            <div class="progress-step">
+                <div class="progress-step-header">
+                    <div class="progress-step-title">
+                        <span class="icon">👥</span>
+                        <span>Step 2: Invite 1 Friend</span>
+                    </div>
+                    <span class="progress-step-status pending" id="inviteStatus">0/1 Invited</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="inviteProgress" style="width: 0%;"></div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="inviteProgress" style="width: 0%;"></div>
                 </div>
-                <p style="font-size: 11px; color: #64748b; margin-top: 6px;">
-                    Share your referral link • Earn bonus spins too!
-                </p>
+                <div class="progress-step-hint">
+                    <span>🎁</span>
+                    <span>Earn 10 bonus spins per referral</span>
+                </div>
             </div>
 
-            <div class="btn-grid" style="margin-top: 20px;">
-                <button class="btn-secondary" onclick="openModal('depositModal')">
-                    💎 Deposit 2 TON
+            <div class="action-buttons">
+                <button class="btn-action btn-deposit" onclick="openModal('depositModal')">
+                    <span class="btn-action-icon">💎</span>
+                    <span>Deposit 2 TON</span>
                 </button>
-                <button class="btn-tertiary" onclick="openModal('inviteModal')">
-                    👥 Invite Friend
+                <button class="btn-action btn-invite" onclick="openModal('inviteModal')">
+                    <span class="btn-action-icon">👥</span>
+                    <span>Invite Friend</span>
                 </button>
             </div>
 
             <button class="btn-withdraw locked" id="withdrawBtn" onclick="handleWithdraw()">
-                🔒 Complete Steps to Withdraw
+                <span>🔒</span>
+                <span>Complete Steps to Withdraw</span>
             </button>
         </div>
 
-        <!-- Get More Spins - Hidden until no spins -->
+        <!-- Get More Spins -->
         <div class="card more-spins-card" id="moreSpinsCard">
-            <h3 style="font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 16px;">
-                🎁 Get More Spins
-            </h3>
+            <div class="more-spins-title">
+                <h3>🎁 Earn More Spins</h3>
+                <p>Complete tasks to get free spins</p>
+            </div>
             
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">📅</span>
-                    <span>Daily Bonus</span>
+                    <div class="task-details">
+                        <h4>Daily Bonus</h4>
+                        <p>Claim every 24 hours</p>
+                    </div>
                 </div>
-                <button class="task-btn" onclick="claimDailyBonus()">Claim +1</button>
+                <button class="task-btn" onclick="claimDailyBonus()">Claim</button>
             </div>
             
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">💎</span>
-                    <span>Deposit 2 TON</span>
+                    <div class="task-details">
+                        <h4>Deposit 2 TON</h4>
+                        <p>Instant bonus spins</p>
+                    </div>
                 </div>
                 <span class="task-reward">+25 SPINS</span>
             </div>
@@ -1006,7 +1550,10 @@
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">👥</span>
-                    <span>Each Referral</span>
+                    <div class="task-details">
+                        <h4>Invite Friends</h4>
+                        <p>Per friend who joins</p>
+                    </div>
                 </div>
                 <span class="task-reward">+10 SPINS</span>
             </div>
@@ -1014,58 +1561,66 @@
             <div class="task-item">
                 <div class="task-info">
                     <span class="task-icon">📱</span>
-                    <span>Join Telegram</span>
+                    <div class="task-details">
+                        <h4>Join Channel</h4>
+                        <p>Follow our Telegram</p>
+                    </div>
                 </div>
-                <button class="task-btn" onclick="joinTelegram()">+3 Spins</button>
+                <button class="task-btn" onclick="joinTelegram()">Join</button>
             </div>
         </div>
 
         <!-- Recent Wins -->
-        <div class="card" id="winsCard" style="display: none;">
-            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
-                🏆 Your Winning History
-            </h3>
+        <div class="card wins-card" id="winsCard">
+            <div class="wins-header">
+                <span>🏆</span>
+                <h3>Your Win History</h3>
+            </div>
             <div class="wins-list" id="winsList"></div>
         </div>
 
-        <!-- Trust Badges -->
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="trust-badge-icon">🔒</div>
-                <div class="trust-badge-text">Secure</div>
+        <!-- Trust Section -->
+        <div class="trust-section">
+            <div class="trust-item">
+                <div class="trust-icon">🔒</div>
+                <div class="trust-text">Secure</div>
             </div>
-            <div class="trust-badge">
-                <div class="trust-badge-icon">⚡</div>
-                <div class="trust-badge-text">Instant</div>
+            <div class="trust-item">
+                <div class="trust-icon">⚡</div>
+                <div class="trust-text">Instant</div>
             </div>
-            <div class="trust-badge">
-                <div class="trust-badge-icon">✅</div>
-                <div class="trust-badge-text">Verified</div>
+            <div class="trust-item">
+                <div class="trust-icon">✅</div>
+                <div class="trust-text">Verified</div>
             </div>
-            <div class="trust-badge">
-                <div class="trust-badge-icon">🌍</div>
-                <div class="trust-badge-text">Global</div>
+            <div class="trust-item">
+                <div class="trust-icon">🌍</div>
+                <div class="trust-text">Global</div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>© 2024 TonSpin. All Rights Reserved.</p>
-            <p style="margin-top: 4px;">Powered by TON Blockchain 💎</p>
+            <div class="footer-brand">
+                <span>💎</span>
+                <span>TonSpin Elite</span>
+            </div>
+            <p>© 2024 All Rights Reserved • Powered by TON Blockchain</p>
         </div>
     </div>
 
     <!-- Deposit Modal -->
     <div class="modal-overlay" id="depositModal">
         <div class="modal">
-            <div class="modal-title">💎 Deposit 2 TON</div>
+            <div class="modal-icon">💎</div>
+            <div class="modal-title">Deposit 2 TON</div>
             <div class="modal-desc">
                 Send exactly <b>2 TON</b> to unlock withdrawals.<br>
-                Your deposit will be returned with your winnings!<br><br>
-                <span style="color: #4ade80;">🎁 BONUS: Get 25 FREE spins instantly!</span>
+                This will be <b>refunded</b> with your winnings!<br><br>
+                <span style="color: #4ade80;">🎁 BONUS: Receive 25 FREE spins!</span>
             </div>
             
-            <div class="wallet-box">
+            <div class="wallet-display">
                 <div class="wallet-label">Send 2 TON to this address:</div>
                 <div class="wallet-address" id="walletAddress">UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M</div>
             </div>
@@ -1087,14 +1642,15 @@
     <!-- Invite Modal -->
     <div class="modal-overlay" id="inviteModal">
         <div class="modal">
-            <div class="modal-title">👥 Invite Friends</div>
+            <div class="modal-icon">👥</div>
+            <div class="modal-title">Invite Friends</div>
             <div class="modal-desc">
-                Share your link and unlock withdrawals!<br><br>
-                <span style="color: #4ade80;">🎁 BONUS: Earn 10 FREE spins per friend!</span>
+                Share your link to unlock withdrawals!<br><br>
+                <span style="color: #4ade80;">🎁 Earn 10 FREE spins for each friend!</span>
             </div>
             
-            <div class="wallet-box">
-                <div class="wallet-label">Your Referral Link</div>
+            <div class="wallet-display">
+                <div class="wallet-label">Your Referral Link:</div>
                 <div class="wallet-address" id="refLink">https://t.me/TonSpinBot/play?start=ref123</div>
             </div>
             
@@ -1115,25 +1671,25 @@
     <!-- Win Modal -->
     <div class="modal-overlay" id="winModal">
         <div class="modal">
-            <div class="win-modal-icon">🎉</div>
-            <div class="modal-title">YOU WON!</div>
+            <div class="modal-icon">🎉</div>
+            <div class="modal-title">CONGRATULATIONS!</div>
             <div class="win-modal-amount" id="winAmount">50 USDT</div>
-            <p style="text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 8px;">
-                Added to your balance! 💰
+            <p style="text-align: center; color: rgba(255,255,255,0.6); font-size: 14px;">
+                Added to your wallet balance! 💰
             </p>
             
-            <div class="withdraw-teaser" id="withdrawTeaser">
-                <p>💰 Ready to withdraw your winnings?</p>
-                <p>Complete 2 simple steps below!</p>
+            <div class="withdraw-hint" id="withdrawHint">
+                <div class="withdraw-hint-title">💰 Ready to withdraw?</div>
+                <div class="withdraw-hint-text">Complete 2 simple steps below!</div>
             </div>
             
-            <div class="near-miss-box" id="nearMissBox" style="display: none;">
-                <p id="nearMissText">😱 SO CLOSE to 500 USDT JACKPOT!</p>
-                <p>One more spin could be the big one!</p>
+            <div class="near-miss-hint" id="nearMissHint" style="display: none;">
+                <div class="near-miss-hint-title" id="nearMissText">😱 SO CLOSE to 500 USDT!</div>
+                <div class="near-miss-hint-text">One more spin could be the jackpot!</div>
             </div>
             
             <button class="modal-btn modal-btn-primary" onclick="closeWinModal()">
-                🎰 Continue
+                🎰 Continue Playing
             </button>
         </div>
     </div>
@@ -1141,9 +1697,9 @@
     <!-- No Spins Modal -->
     <div class="modal-overlay" id="noSpinsModal">
         <div class="modal">
-            <div class="win-modal-icon">😢</div>
-            <div class="modal-title">No Spins Left!</div>
-            <div class="modal-desc">Get more spins to keep winning:</div>
+            <div class="modal-icon">😢</div>
+            <div class="modal-title">Out of Spins!</div>
+            <div class="modal-desc">Get more spins to keep winning big!</div>
             
             <button class="modal-btn modal-btn-primary" onclick="closeModal('noSpinsModal'); openModal('depositModal');">
                 💎 Deposit = 25 Spins
@@ -1154,7 +1710,7 @@
             </button>
             
             <button class="modal-btn modal-btn-cancel" onclick="closeModal('noSpinsModal')">
-                Close
+                Maybe Later
             </button>
         </div>
     </div>
@@ -1162,13 +1718,14 @@
     <!-- Withdraw Modal -->
     <div class="modal-overlay" id="withdrawModal">
         <div class="modal">
-            <div class="modal-title">💰 Withdraw Funds</div>
-            <div class="modal-desc">Enter your TON wallet address to receive your winnings.</div>
+            <div class="modal-icon">💸</div>
+            <div class="modal-title">Withdraw Funds</div>
+            <div class="modal-desc">Enter your TON wallet address to receive your crypto.</div>
             
-            <input type="text" class="modal-input" id="withdrawAddress" placeholder="Your TON wallet address">
+            <input type="text" class="modal-input" id="withdrawAddress" placeholder="Your TON wallet address (UQ... or EQ...)">
             
-            <p style="text-align: center; font-size: 14px; color: #4ade80; margin-bottom: 16px;">
-                Available: <span id="withdrawAvailable">$0.00</span>
+            <p style="text-align: center; font-size: 15px; color: #4ade80; margin-bottom: 20px;">
+                Withdrawing: <b id="withdrawAvailable">$0.00</b>
             </p>
             
             <button class="modal-btn modal-btn-success" onclick="processWithdraw()">
@@ -1207,9 +1764,7 @@
             { label: '15 USDT', value: 15, currency: 'usdt', color: '#14b8a6', textColor: '#fff' }
         ];
 
-        // First spin - indices of SEGMENTS that give good rewards (50 USDT, 5 TON, 25 USDT)
-        // These MUST match exact indices in SEGMENTS array so wheel lands correctly
-        const FIRST_SPIN_INDICES = [3, 4, 5]; // 50 USDT (index 3), 5 TON (index 4), 25 USDT (index 5)
+        const FIRST_SPIN_INDICES = [3, 4, 5];
 
         // ============ TELEGRAM INIT ============
         let tg = window.Telegram?.WebApp;
@@ -1220,15 +1775,11 @@
                 tg.expand();
                 tg.ready();
                 tg.enableClosingConfirmation();
-                
-                document.body.style.setProperty('--tg-theme-bg-color', tg.backgroundColor || '#0f172a');
                 tgUser = tg.initDataUnsafe?.user;
-                
                 if (tgUser) {
                     const refLink = `https://t.me/TonSpinBot/play?start=ref_${tgUser.id}`;
                     document.getElementById('refLink').textContent = refLink;
                 }
-                
                 haptic('medium');
             }
         }
@@ -1253,7 +1804,7 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = canvas.width / 2 - 2;
+            const radius = canvas.width / 2 - 5;
             const segmentAngle = (2 * Math.PI) / SEGMENTS.length;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1262,55 +1813,51 @@
                 const startAngle = i * segmentAngle - Math.PI / 2;
                 const endAngle = startAngle + segmentAngle;
 
-                // Draw segment
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, endAngle);
                 ctx.closePath();
                 
-                // Gradient fill
                 const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-                gradient.addColorStop(0, lightenColor(segment.color, 20));
-                gradient.addColorStop(1, segment.color);
+                gradient.addColorStop(0, lightenColor(segment.color, 30));
+                gradient.addColorStop(0.7, segment.color);
+                gradient.addColorStop(1, darkenColor(segment.color, 20));
                 ctx.fillStyle = gradient;
                 ctx.fill();
                 
-                // Border
                 ctx.strokeStyle = 'rgba(255,255,255,0.3)';
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Draw text
                 ctx.save();
                 ctx.translate(centerX, centerY);
                 ctx.rotate(startAngle + segmentAngle / 2);
                 ctx.textAlign = 'right';
                 ctx.fillStyle = segment.textColor;
-                ctx.font = 'bold 13px Inter, sans-serif';
+                ctx.font = 'bold 14px Space Grotesk, sans-serif';
                 ctx.shadowColor = 'rgba(0,0,0,0.5)';
                 ctx.shadowBlur = 4;
-                ctx.shadowOffsetX = 1;
-                ctx.shadowOffsetY = 1;
-                ctx.fillText(segment.label, radius - 15, 5);
+                ctx.fillText(segment.label, radius - 20, 5);
                 ctx.restore();
             });
-
-            // Inner circle shadow
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.fill();
         }
 
         function lightenColor(color, percent) {
             const num = parseInt(color.replace('#', ''), 16);
             const amt = Math.round(2.55 * percent);
-            const R = (num >> 16) + amt;
-            const G = (num >> 8 & 0x00FF) + amt;
-            const B = (num & 0x0000FF) + amt;
-            return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-                (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+            const R = Math.min(255, (num >> 16) + amt);
+            const G = Math.min(255, (num >> 8 & 0x00FF) + amt);
+            const B = Math.min(255, (num & 0x0000FF) + amt);
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+
+        function darkenColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, (num >> 16) - amt);
+            const G = Math.max(0, (num >> 8 & 0x00FF) - amt);
+            const B = Math.max(0, (num & 0x0000FF) - amt);
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
         }
 
         // ============ SPIN WHEEL ============
@@ -1330,20 +1877,16 @@
 
             const btn = document.getElementById('spinBtn');
             btn.disabled = true;
-            btn.textContent = '🎰 SPINNING...';
-            btn.classList.remove('animate-glow');
+            btn.innerHTML = '<div class="btn-spin-content"><span>🎰</span><span>SPINNING...</span></div>';
+            btn.classList.remove('glow');
 
-            // Select segment index FIRST, then get reward from SEGMENTS
             let segmentIndex;
             
             if (STATE.firstSpin) {
-                // First spin always wins from predefined good segments
-                // FIRST_SPIN_INDICES = [3, 4, 5] which are: 50 USDT, 5 TON, 25 USDT
                 segmentIndex = FIRST_SPIN_INDICES[Math.floor(Math.random() * FIRST_SPIN_INDICES.length)];
                 STATE.firstSpin = false;
             } else {
-                // Random weighted selection - lower index = rarer prize
-                const weights = [1, 2, 5, 10, 15, 25, 25, 17]; // Must match SEGMENTS length
+                const weights = [1, 2, 5, 10, 15, 25, 25, 17];
                 const totalWeight = weights.reduce((a, b) => a + b, 0);
                 let random = Math.random() * totalWeight;
                 
@@ -1354,27 +1897,15 @@
                         break;
                     }
                 }
-                
-                // Fallback safety
                 if (segmentIndex === undefined) segmentIndex = 5;
             }
 
-            // Get reward directly from SEGMENTS using index - GUARANTEED MATCH!
             const reward = SEGMENTS[segmentIndex];
-            
-            // Calculate spin - wheel pointer is at TOP (12 o'clock position)
-            // Segments are drawn starting from top and going clockwise
-            const segmentAngle = 360 / SEGMENTS.length; // 45 degrees per segment
-            
-            // Calculate where this segment's CENTER is (in degrees from top, clockwise)
+            const segmentAngle = 360 / SEGMENTS.length;
             const segmentCenterAngle = segmentIndex * segmentAngle + (segmentAngle / 2);
-            
-            // We need to rotate the wheel so this segment's center aligns with TOP (pointer)
-            // That means rotating (360 - segmentCenterAngle) degrees + full spins
-            const spins = 5 + Math.floor(Math.random() * 3); // 5-7 full rotations
+            const spins = 5 + Math.floor(Math.random() * 3);
             const targetRotation = (spins * 360) + (360 - segmentCenterAngle);
             
-            // Animate wheel
             const canvas = document.getElementById('wheelCanvas');
             const startRotation = STATE.currentRotation;
             const endRotation = startRotation + targetRotation;
@@ -1384,17 +1915,12 @@
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
-                // Easing function (ease out cubic for smooth stop)
                 const easeOut = 1 - Math.pow(1 - progress, 3);
                 const currentRotation = startRotation + (targetRotation * easeOut);
                 
                 canvas.style.transform = `rotate(${currentRotation}deg)`;
                 
-                // Tick haptic feedback during spin
-                if (progress < 0.8 && elapsed % 100 < 50) {
-                    haptic('light');
-                }
+                if (progress < 0.8 && elapsed % 100 < 50) haptic('light');
                 
                 if (progress < 1) {
                     requestAnimationFrame(animate);
@@ -1410,7 +1936,6 @@
         function finishSpin(reward) {
             STATE.isSpinning = false;
             
-            // Update balance
             if (reward.currency === 'usdt') {
                 STATE.balance.usdt += reward.value;
                 highlightBalance('usdtBox');
@@ -1422,14 +1947,7 @@
                 highlightBalance('btcBox');
             }
 
-            // Record win
-            STATE.wins.unshift({ 
-                prize: reward.label, 
-                time: new Date(),
-                value: reward.value,
-                currency: reward.currency
-            });
-            
+            STATE.wins.unshift({ prize: reward.label, time: new Date(), value: reward.value, currency: reward.currency });
             STATE.hasWon = true;
             
             updateUI();
@@ -1446,18 +1964,18 @@
 
         function updateSpinButton() {
             const btn = document.getElementById('spinBtn');
-            const badge = document.getElementById('freeSpinBadge');
+            const badge = document.getElementById('freeSpinBanner');
             
             if (STATE.spins > 0) {
                 btn.disabled = false;
-                btn.textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
-                btn.classList.add('animate-glow');
+                btn.innerHTML = `<div class="btn-spin-content"><span>🎰</span><span>SPIN NOW (${STATE.spins} left)</span></div>`;
+                btn.classList.add('glow');
                 badge.classList.remove('hidden');
                 document.getElementById('spinCount').textContent = STATE.spins;
             } else {
                 btn.disabled = false;
-                btn.textContent = '😢 Get More Spins';
-                btn.classList.remove('animate-glow');
+                btn.innerHTML = '<div class="btn-spin-content"><span>😢</span><span>GET MORE SPINS</span></div>';
+                btn.classList.remove('glow');
                 badge.classList.add('hidden');
                 btn.onclick = () => openModal('noSpinsModal');
             }
@@ -1467,67 +1985,52 @@
 
         // ============ UI UPDATES ============
         function updateUI() {
-            // Balance
             document.getElementById('balanceUSDT').textContent = STATE.balance.usdt.toFixed(2);
             document.getElementById('balanceTON').textContent = STATE.balance.ton.toFixed(2);
             document.getElementById('balanceBTC').textContent = STATE.balance.btc.toFixed(6);
             
-            // Calculate total in USD
             const totalUSD = STATE.balance.usdt + (STATE.balance.ton * 7) + (STATE.balance.btc * 67000);
             document.getElementById('totalWinnings').textContent = '$' + totalUSD.toFixed(2);
             document.getElementById('withdrawAvailable').textContent = '$' + totalUSD.toFixed(2);
 
-            // Show unlock card ONLY after first win
             if (STATE.hasWon) {
                 document.getElementById('unlockCard').classList.add('visible');
                 document.getElementById('moreSpinsCard').classList.add('visible');
             }
 
-            // Progress bars
             const depositFill = document.getElementById('depositProgress');
             const inviteFill = document.getElementById('inviteProgress');
             
             depositFill.style.width = STATE.deposited ? '100%' : '0%';
             depositFill.classList.toggle('complete', STATE.deposited);
-            document.getElementById('depositStatus').textContent = STATE.deposited ? '✅ Complete!' : '0/2 TON';
-            document.getElementById('depositStatus').style.color = STATE.deposited ? '#4ade80' : '#ef4444';
+            document.getElementById('depositStatus').textContent = STATE.deposited ? '✅ Complete' : '0/2 TON';
+            document.getElementById('depositStatus').className = 'progress-step-status ' + (STATE.deposited ? 'complete' : 'pending');
 
             inviteFill.style.width = STATE.invited ? '100%' : '0%';
             inviteFill.classList.toggle('complete', STATE.invited);
-            document.getElementById('inviteStatus').textContent = STATE.invited ? '✅ Complete!' : '0/1 Friend';
-            document.getElementById('inviteStatus').style.color = STATE.invited ? '#4ade80' : '#ef4444';
+            document.getElementById('inviteStatus').textContent = STATE.invited ? '✅ Complete' : '0/1 Invited';
+            document.getElementById('inviteStatus').className = 'progress-step-status ' + (STATE.invited ? 'complete' : 'pending');
 
-            // Withdraw button
             const withdrawBtn = document.getElementById('withdrawBtn');
             if (STATE.deposited && STATE.invited) {
-                withdrawBtn.classList.remove('locked');
-                withdrawBtn.classList.add('unlocked');
-                withdrawBtn.textContent = '💰 Withdraw $' + totalUSD.toFixed(2) + ' Now!';
+                withdrawBtn.className = 'btn-withdraw unlocked';
+                withdrawBtn.innerHTML = `<span>💰</span><span>Withdraw $${totalUSD.toFixed(2)} Now!</span>`;
             } else {
-                withdrawBtn.classList.add('locked');
-                withdrawBtn.classList.remove('unlocked');
-                
-                if (!STATE.deposited && !STATE.invited) {
-                    withdrawBtn.textContent = '🔒 Complete Both Steps to Withdraw';
-                } else if (!STATE.deposited) {
-                    withdrawBtn.textContent = '🔒 Deposit 2 TON to Withdraw';
-                } else {
-                    withdrawBtn.textContent = '🔒 Invite 1 Friend to Withdraw';
-                }
+                withdrawBtn.className = 'btn-withdraw locked';
+                withdrawBtn.innerHTML = '<span>🔒</span><span>Complete Steps to Withdraw</span>';
             }
 
-            // Wins history
             if (STATE.wins.length > 0) {
-                const winsCard = document.getElementById('winsCard');
-                winsCard.style.display = 'block';
-                
+                document.getElementById('winsCard').classList.add('visible');
                 const winsList = document.getElementById('winsList');
                 winsList.innerHTML = STATE.wins.slice(0, 10).map(w => {
                     const timeAgo = getTimeAgo(w.time);
                     return `<div class="win-item">
-                        <span>🎉</span>
-                        <span>Won <span class="win-amount">${w.prize}</span></span>
-                        <span style="margin-left: auto; color: #64748b; font-size: 11px;">${timeAgo}</span>
+                        <span class="win-item-icon">🎉</span>
+                        <div class="win-item-details">
+                            <span class="win-item-amount">${w.prize}</span>
+                            <span class="win-item-time">${timeAgo}</span>
+                        </div>
                     </div>`;
                 }).join('');
             }
@@ -1540,8 +2043,7 @@
             if (seconds < 60) return 'just now';
             const minutes = Math.floor(seconds / 60);
             if (minutes < 60) return `${minutes}m ago`;
-            const hours = Math.floor(minutes / 60);
-            return `${hours}h ago`;
+            return `${Math.floor(minutes / 60)}h ago`;
         }
 
         // ============ MODALS ============
@@ -1557,12 +2059,10 @@
         function showWinModal(prize) {
             document.getElementById('winAmount').textContent = prize;
             
-            // Show near-miss sometimes to encourage more spins
-            const nearMissBox = document.getElementById('nearMissBox');
+            const nearMissHint = document.getElementById('nearMissHint');
             const nearMissText = document.getElementById('nearMissText');
-            const withdrawTeaser = document.getElementById('withdrawTeaser');
+            const withdrawHint = document.getElementById('withdrawHint');
             
-            // Dynamic near-miss messages based on what they won
             const nearMissMessages = [
                 '😱 SO CLOSE to 500 USDT JACKPOT!',
                 '🔥 Almost hit 0.01 BTC!',
@@ -1572,27 +2072,20 @@
             
             if (Math.random() > 0.4 && !prize.includes('500') && !prize.includes('0.01 BTC')) {
                 nearMissText.textContent = nearMissMessages[Math.floor(Math.random() * nearMissMessages.length)];
-                nearMissBox.style.display = 'block';
+                nearMissHint.style.display = 'block';
             } else {
-                nearMissBox.style.display = 'none';
+                nearMissHint.style.display = 'none';
             }
             
-            // Show withdraw teaser if has balance
-            withdrawTeaser.style.display = STATE.hasWon ? 'block' : 'none';
-            
+            withdrawHint.style.display = STATE.hasWon ? 'block' : 'none';
             openModal('winModal');
         }
 
         function closeWinModal() {
             closeModal('winModal');
-            
-            // Scroll to unlock card after closing win modal
             if (STATE.hasWon) {
                 setTimeout(() => {
-                    document.getElementById('unlockCard').scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
+                    document.getElementById('unlockCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
             }
         }
@@ -1600,36 +2093,23 @@
         // ============ ACTIONS ============
         function copyWallet() {
             const address = 'UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M';
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(address);
-            } else {
-                const input = document.createElement('input');
-                input.value = address;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-            }
-            
-            showAlert('✅ Wallet address copied! Send exactly 2 TON.');
+            navigator.clipboard?.writeText(address) || fallbackCopy(address);
+            showAlert('✅ Wallet address copied!');
             haptic('success');
+        }
+
+        function fallbackCopy(text) {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
         }
 
         function copyRefLink() {
             const link = document.getElementById('refLink').textContent;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(link);
-            } else {
-                const input = document.createElement('input');
-                input.value = link;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
-            }
-            
+            navigator.clipboard?.writeText(link) || fallbackCopy(link);
             showAlert('✅ Referral link copied!');
             haptic('success');
         }
@@ -1638,18 +2118,13 @@
             const userId = tgUser?.id || Math.random().toString(36).substr(2, 9);
             const refLink = `https://t.me/TonSpinBot/play?start=ref_${userId}`;
             const text = `🎰 I just won FREE crypto on TonSpin!\n\n💰 Get your FREE spin and win USDT, TON, BTC!\n\n👉 Click to play:`;
-            
             const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(text)}`;
             
-            if (tg?.openTelegramLink) {
-                tg.openTelegramLink(shareUrl);
-            } else {
-                window.open(shareUrl, '_blank');
-            }
+            if (tg?.openTelegramLink) tg.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
             
             closeModal('inviteModal');
             
-            // Simulate friend joining after share
             setTimeout(() => {
                 STATE.invited = true;
                 STATE.spins += 10;
@@ -1661,14 +2136,13 @@
 
         function confirmDeposit() {
             closeModal('depositModal');
-            showAlert('⏳ Verifying your deposit... Please wait 1-2 minutes.');
+            showAlert('⏳ Verifying your deposit... Please wait.');
             
-            // Simulate deposit verification
             setTimeout(() => {
                 STATE.deposited = true;
                 STATE.spins += 25;
                 updateUI();
-                showAlert('✅ Deposit verified! +25 Spins added to your account!');
+                showAlert('✅ Deposit verified! +25 Spins added!');
                 haptic('success');
             }, 3000);
         }
@@ -1676,37 +2150,32 @@
         function claimDailyBonus() {
             STATE.spins += 1;
             updateUI();
-            showAlert('✅ Daily bonus claimed! +1 Spin added!');
+            showAlert('✅ Daily bonus claimed! +1 Spin!');
             haptic('success');
         }
 
         function joinTelegram() {
-            if (tg?.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/TonSpinChannel');
-            } else {
-                window.open('https://t.me/TonSpinChannel', '_blank');
-            }
+            if (tg?.openTelegramLink) tg.openTelegramLink('https://t.me/TonSpinChannel');
+            else window.open('https://t.me/TonSpinChannel', '_blank');
             
             setTimeout(() => {
                 STATE.spins += 3;
                 updateUI();
-                showAlert('✅ Thanks for joining! +3 Spins added!');
+                showAlert('✅ Thanks for joining! +3 Spins!');
                 haptic('success');
             }, 2000);
         }
 
         function handleWithdraw() {
             if (!STATE.deposited || !STATE.invited) {
-                if (!STATE.deposited && !STATE.invited) {
-                    showAlert('❌ Please complete both steps: Deposit 2 TON and Invite 1 Friend');
-                } else if (!STATE.deposited) {
-                    showAlert('❌ Please deposit 2 TON to unlock withdrawals');
+                haptic('error');
+                if (!STATE.deposited) {
+                    showAlert('❌ Please deposit 2 TON first');
                     openModal('depositModal');
                 } else {
-                    showAlert('❌ Please invite 1 friend to unlock withdrawals');
+                    showAlert('❌ Please invite 1 friend first');
                     openModal('inviteModal');
                 }
-                haptic('error');
                 return;
             }
             openModal('withdrawModal');
@@ -1715,20 +2184,14 @@
         function processWithdraw() {
             const address = document.getElementById('withdrawAddress').value.trim();
             
-            if (!address) {
-                showAlert('❌ Please enter your TON wallet address');
-                haptic('error');
-                return;
-            }
-            
-            if (!address.startsWith('UQ') && !address.startsWith('EQ')) {
+            if (!address || (!address.startsWith('UQ') && !address.startsWith('EQ'))) {
                 showAlert('❌ Please enter a valid TON wallet address');
                 haptic('error');
                 return;
             }
             
             closeModal('withdrawModal');
-            showAlert('✅ Withdrawal submitted successfully!\n\nYour funds will arrive within 24 hours.');
+            showAlert('✅ Withdrawal submitted!\n\nFunds will arrive within 24 hours.');
             haptic('success');
         }
 
@@ -1736,33 +2199,28 @@
         function createCoinRain() {
             const emojis = ['💰', '💵', '🪙', '💎', '✨', '🎉', '💲', '🏆'];
             
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 40; i++) {
                 setTimeout(() => {
                     const coin = document.createElement('div');
                     coin.className = 'coin';
                     coin.textContent = emojis[Math.floor(Math.random() * emojis.length)];
                     coin.style.left = (Math.random() * 100) + 'vw';
-                    coin.style.animationDuration = (2 + Math.random() * 1.5) + 's';
-                    coin.style.fontSize = (20 + Math.random() * 20) + 'px';
+                    coin.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';
+                    coin.style.fontSize = (24 + Math.random() * 20) + 'px';
                     document.body.appendChild(coin);
-                    
                     setTimeout(() => coin.remove(), 4000);
-                }, i * 60);
+                }, i * 50);
             }
         }
 
         function startCountdown() {
-            let time = 899; // 14:59
-            
+            let time = 899;
             function update() {
                 const mins = Math.floor(time / 60);
                 const secs = time % 60;
-                document.getElementById('countdown').textContent = 
-                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                
-                time = time > 0 ? time - 1 : 899; // Reset after reaching 0
+                document.getElementById('countdown').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                time = time > 0 ? time - 1 : 899;
             }
-            
             update();
             setInterval(update, 1000);
         }
@@ -1773,11 +2231,6 @@
             drawWheel();
             startCountdown();
             updateUI();
-            
-            // Preload animations
-            setTimeout(() => {
-                document.getElementById('freeSpinBadge').classList.add('animate-shake');
-            }, 1000);
         });
     </script>
 </body>
