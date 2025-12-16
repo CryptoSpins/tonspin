@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TonSpin - Free Crypto Spin Game | Win TON, USDT, BTC Daily Rewards</title>
+    <meta name="description" content="🎰 Spin FREE & win real crypto! Earn TON, USDT, Bitcoin instantly. 100% FREE first spin. Join 100,000+ players winning daily crypto rewards on Telegram!">
+    <meta name="keywords" content="free crypto, spin to earn, win USDT, TON rewards, crypto games, earn bitcoin, telegram games, TON blockchain, free TON, win crypto, telegram mini app">
+    <meta property="og:title" content="TonSpin - Win Free Crypto Every Spin! 🎰">
+    <meta property="og:description" content="Get your FREE spin now! Win TON, USDT, BTC & more. 100,000+ users already winning daily!">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(var(--spin-deg, 1800deg)); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.8), 0 0 60px rgba(34, 211, 238, 0.5), 0 0 80px rgba(34, 211, 238, 0.3); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-4px) rotate(-1deg); }
+            40% { transform: translateX(4px) rotate(1deg); }
+            60% { transform: translateX(-4px) rotate(-1deg); }
+            80% { transform: translateX(4px) rotate(1deg); }
+        }
+        
+        @keyframes coinDrop {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-200%); }
+        }
+        
+        @keyframes urgencyPulse {
+            0%, 100% { background: linear-gradient(90deg, #dc2626, #ef4444); }
+            50% { background: linear-gradient(90deg, #ef4444, #f87171); }
+        }
+        
+        .animate-spin-wheel {
+            animation: spin 5s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+        }
+        
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        .animate-glow { animation: glow 2s ease-in-out infinite; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-shake { animation: shake 0.6s ease-in-out infinite; }
+        .animate-slideIn { animation: slideIn 0.5s ease-out forwards; }
+        
+        /* Layout */
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        /* Live Ticker */
+        .ticker-wrap {
+            background: linear-gradient(90deg, #059669, #0891b2);
+            padding: 10px 0;
+            overflow: hidden;
+        }
+        
+        .ticker {
+            display: flex;
+            gap: 40px;
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+        }
+        
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* Urgency Banner */
+        .urgency-banner {
+            animation: urgencyPulse 1.5s ease-in-out infinite;
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        /* Balance Grid */
+        .balance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .balance-item {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            padding: 16px 8px;
+            text-align: center;
+        }
+        
+        .balance-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .balance-value {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        
+        .balance-label {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Wheel */
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        
+        .wheel-glow {
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            border: 6px solid #fbbf24;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.5), inset 0 0 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .wheel-inner {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+        }
+        
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 50%;
+            top: 0;
+            transform-origin: 0% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(0% 100%, 100% 0%, 0% 0%);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 4px solid #fbbf24;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+        
+        .wheel-pointer::before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 30px solid #fbbf24;
+        }
+        
+        /* Canvas Wheel */
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 18px 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-spin {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            color: white;
+        }
+        
+        .btn-spin:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.4);
+        }
+        
+        .btn-spin:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .btn-tertiary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+        }
+        
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .btn-grid button {
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-grid button:active {
+            transform: scale(0.98);
+        }
+        
+        /* Free Spin Badge */
+        .free-spin-badge {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            border-radius: 14px;
+            padding: 14px 20px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* Progress Section */
+        .progress-item {
+            margin-bottom: 16px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Withdraw Button */
+        .btn-withdraw {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-withdraw.locked {
+            background: #334155;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+        
+        .btn-withdraw.unlocked {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        /* Spins Counter */
+        .spins-counter {
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        
+        .spins-counter span {
+            color: #22d3ee;
+            font-weight: 700;
+        }
+        
+        /* Tasks List */
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .task-icon {
+            font-size: 20px;
+        }
+        
+        .task-reward {
+            background: rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .task-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        
+        /* Recent Wins */
+        .wins-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .win-item {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .win-amount {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+        
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding: 20px 0;
+        }
+        
+        .trust-badge {
+            text-align: center;
+        }
+        
+        .trust-badge-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .trust-badge-text {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 360px;
+            width: 100%;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .modal-desc {
+            color: #94a3b8;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .modal-input:focus {
+            outline: none;
+            border-color: #22d3ee;
+        }
+        
+        .wallet-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+        
+        .wallet-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        
+        .wallet-address {
+            font-size: 11px;
+            color: #22d3ee;
+            word-break: break-all;
+            font-family: monospace;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .modal-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            color: white;
+        }
+        
+        .modal-btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .modal-btn-cancel {
+            background: #334155;
+            color: #94a3b8;
+        }
+        
+        /* Win Modal Special */
+        .win-modal-icon {
+            font-size: 72px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .win-modal-amount {
+            font-size: 36px;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .near-miss-box {
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(239, 68, 68, 0.2));
+            border: 1px solid #f97316;
+            border-radius: 12px;
+            padding: 14px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        
+        .near-miss-box p:first-child {
+            color: #fb923c;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .near-miss-box p:last-child {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        /* Coin Rain */
+        .coin {
+            position: fixed;
+            font-size: 28px;
+            animation: coinDrop 2.5s linear forwards;
+            pointer-events: none;
+            z-index: 2000;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #22d3ee, #a855f7, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        
+        .tagline {
+            font-size: 13px;
+            color: #22d3ee;
+            margin-top: 4px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #475569;
+            font-size: 11px;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 360px) {
+            .wheel-container {
+                width: 260px;
+                height: 260px;
+            }
+            .balance-value {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Live Winners Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="ticker">
+            <div class="ticker-item">🎉 Alex***89 won <b>75 USDT</b></div>
+            <div class="ticker-item">💎 Kim***23 won <b>5 TON</b></div>
+            <div class="ticker-item">🚀 Max***56 won <b>0.008 BTC</b></div>
+            <div class="ticker-item">⭐ Sara***12 won <b>120 USDT</b></div>
+            <div class="ticker-item">🔥 John***78 won <b>8 TON</b></div>
+            <div class="ticker-item">💰 Emma***34 won <b>0.15 ETH</b></div>
+        </div>
+    </div>
+
+    <!-- Urgency Banner -->
+    <div class="urgency-banner" id="urgencyBanner">
+        ⚡ BONUS EVENT: <span id="countdown">14:59</span> left for 3X REWARDS! ⚡
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">💎 TONSPIN</div>
+            <div class="tagline">🌟 127,534 Players • $4.2M Paid Out 🌟</div>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="color: #94a3b8; font-size: 14px;">Your Balance</span>
+                <div class="status-badge">✓ VERIFIED</div>
+            </div>
+            <div class="balance-grid">
+                <div class="balance-item">
+                    <div class="balance-icon">💵</div>
+                    <div class="balance-value" style="color: #4ade80;" id="balanceUSDT">0.00</div>
+                    <div class="balance-label">USDT</div>
+                </div>
+                <div class="balance-item">
+                    <div class="balance-icon">💎</div>
+                    <div class="balance-value" style="color: #22d3ee;" id="balanceTON">0.00</div>
+                    <div class="balance-label">TON</div>
+                </div>
+                <div class="balance-item">
+                    <div class="balance-icon">₿</div>
+                    <div class="balance-value" style="color: #fb923c;" id="balanceBTC">0.000000</div>
+                    <div class="balance-label">BTC</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Spin Badge -->
+        <div class="free-spin-badge animate-shake" id="freeSpinBadge">
+            🎁 You have <span id="spinCount">1</span> FREE SPIN! Claim it now!
+        </div>
+
+        <!-- Spin Wheel -->
+        <div class="card" style="padding: 24px 16px;">
+            <div class="wheel-container">
+                <div class="wheel-glow"></div>
+                <div class="wheel-pointer"></div>
+                <div class="wheel" id="wheelWrapper">
+                    <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                    <div class="wheel-center">🎰</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spin Button -->
+        <button class="btn-primary btn-spin animate-glow" id="spinBtn" onclick="spinWheel()">
+            🎰 SPIN NOW - FREE!
+        </button>
+
+        <!-- Spins Counter -->
+        <div class="spins-counter">
+            Spins Left: <span id="spinsLeft">1</span> | 
+            <span style="color: #fbbf24;">Get more spins below ⬇️</span>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
+                📊 Unlock Withdrawals
+            </h3>
+            
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span style="color: #94a3b8;">💎 Deposit 2 TON</span>
+                    <span id="depositStatus" style="color: #ef4444;">0/2 TON</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="depositProgress" style="width: 0%;"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item">
+                <div class="progress-header">
+                    <span style="color: #94a3b8;">👥 Invite 1 Friend</span>
+                    <span id="inviteStatus" style="color: #ef4444;">0/1 Friend</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="inviteProgress" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 12px; color: #64748b; margin-top: 8px;">
+                Complete both tasks to withdraw your winnings!
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-grid">
+            <button class="btn-secondary" onclick="openModal('depositModal')">
+                💎 Deposit TON
+            </button>
+            <button class="btn-tertiary" onclick="openModal('inviteModal')">
+                👥 Invite Friend
+            </button>
+        </div>
+
+        <!-- Withdraw Button -->
+        <button class="btn-withdraw locked" id="withdrawBtn" onclick="handleWithdraw()">
+            🔒 Complete Tasks to Withdraw
+        </button>
+
+        <!-- Get More Spins -->
+        <div class="card" style="margin-top: 16px;">
+            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
+                🎁 Get More Spins
+            </h3>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <span class="task-icon">📅</span>
+                    <span>Daily Check-in</span>
+                </div>
+                <button class="task-btn" onclick="claimDailyBonus()">Claim</button>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <span class="task-icon">💎</span>
+                    <span>Deposit 1 TON</span>
+                </div>
+                <span class="task-reward">+10 SPINS</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <span class="task-icon">👥</span>
+                    <span>Each Referral</span>
+                </div>
+                <span class="task-reward">+5 SPINS</span>
+            </div>
+        </div>
+
+        <!-- Recent Wins -->
+        <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 16px;">
+                🏆 Your Recent Wins
+            </h3>
+            <div class="wins-list" id="winsList">
+                <div class="win-item" style="justify-content: center; color: #64748b;">
+                    Spin to start winning! 🎰
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🔒</div>
+                <div class="trust-badge-text">Secure</div>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">⚡</div>
+                <div class="trust-badge-text">Instant</div>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">✅</div>
+                <div class="trust-badge-text">Verified</div>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🌍</div>
+                <div class="trust-badge-text">Global</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 TonSpin. All Rights Reserved.</p>
+            <p style="margin-top: 4px;">Powered by TON Blockchain 💎</p>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal">
+            <div class="modal-title">💎 Deposit 2 TON</div>
+            <div class="modal-desc">
+                Send exactly 2 TON to unlock withdrawals and receive 20 FREE bonus spins!
+            </div>
+            
+            <div class="wallet-box">
+                <div class="wallet-label">TON Wallet Address</div>
+                <div class="wallet-address" id="walletAddress">UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M</div>
+            </div>
+            
+            <button class="modal-btn modal-btn-primary" onclick="copyWallet()">
+                📋 Copy Wallet Address
+            </button>
+            
+            <button class="modal-btn modal-btn-success" onclick="confirmDeposit()">
+                ✅ I've Sent 2 TON
+            </button>
+            
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal('depositModal')">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal">
+            <div class="modal-title">👥 Invite Friends</div>
+            <div class="modal-desc">
+                Share your unique link and earn 5 FREE spins for each friend who joins!
+            </div>
+            
+            <div class="wallet-box">
+                <div class="wallet-label">Your Referral Link</div>
+                <div class="wallet-address" id="refLink">https://t.me/TonSpinBot/play?start=ref123</div>
+            </div>
+            
+            <button class="modal-btn modal-btn-primary" onclick="copyRefLink()">
+                📋 Copy Referral Link
+            </button>
+            
+            <button class="modal-btn modal-btn-success" onclick="shareOnTelegram()">
+                📤 Share on Telegram
+            </button>
+            
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal('inviteModal')">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal-overlay" id="winModal">
+        <div class="modal">
+            <div class="win-modal-icon animate-float">🎉</div>
+            <div class="modal-title">CONGRATULATIONS!</div>
+            <div class="modal-desc">You won:</div>
+            <div class="win-modal-amount" id="winAmount">50 USDT</div>
+            <p style="text-align: center; color: #64748b; font-size: 13px; margin-bottom: 16px;">
+                Added to your balance!
+            </p>
+            
+            <div class="near-miss-box" id="nearMissBox" style="display: none;">
+                <p>😱 SO CLOSE to the JACKPOT!</p>
+                <p>Spin again for another chance at 500 USDT!</p>
+            </div>
+            
+            <button class="modal-btn modal-btn-primary" onclick="closeModal('winModal')">
+                🎰 Spin Again!
+            </button>
+        </div>
+    </div>
+
+    <!-- No Spins Modal -->
+    <div class="modal-overlay" id="noSpinsModal">
+        <div class="modal">
+            <div class="win-modal-icon">😢</div>
+            <div class="modal-title">No Spins Left!</div>
+            <div class="modal-desc">Get more spins to continue winning:</div>
+            
+            <button class="modal-btn modal-btn-primary" onclick="closeModal('noSpinsModal'); openModal('depositModal');">
+                💎 Deposit = 20 Spins
+            </button>
+            
+            <button class="modal-btn modal-btn-success" onclick="closeModal('noSpinsModal'); openModal('inviteModal');">
+                👥 Invite = 5 Spins
+            </button>
+            
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal('noSpinsModal')">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal-overlay" id="withdrawModal">
+        <div class="modal">
+            <div class="modal-title">💰 Withdraw Funds</div>
+            <div class="modal-desc">Enter your wallet address and amount to withdraw.</div>
+            
+            <input type="text" class="modal-input" id="withdrawAddress" placeholder="Your TON wallet address">
+            <input type="number" class="modal-input" id="withdrawAmount" placeholder="Amount to withdraw">
+            
+            <button class="modal-btn modal-btn-success" onclick="processWithdraw()">
+                Withdraw Now
+            </button>
+            
+            <button class="modal-btn modal-btn-cancel" onclick="closeModal('withdrawModal')">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ============ GAME STATE ============
+        const STATE = {
+            spins: 1,
+            balance: { usdt: 0, ton: 0, btc: 0 },
+            deposited: false,
+            invited: false,
+            isSpinning: false,
+            wins: [],
+            firstSpin: true,
+            totalWins: 0
+        };
+
+        // ============ WHEEL CONFIG ============
+        const SEGMENTS = [
+            { label: '500 USDT', value: 500, currency: 'usdt', color: '#f59e0b', prob: 1 },
+            { label: '10 TON', value: 10, currency: 'ton', color: '#06b6d4', prob: 3 },
+            { label: '0.01 BTC', value: 0.01, currency: 'btc', color: '#f97316', prob: 2 },
+            { label: '50 USDT', value: 50, currency: 'usdt', color: '#8b5cf6', prob: 8 },
+            { label: '5 TON', value: 5, currency: 'ton', color: '#10b981', prob: 10 },
+            { label: '25 USDT', value: 25, currency: 'usdt', color: '#ec4899', prob: 15 },
+            { label: '2 TON', value: 2, currency: 'ton', color: '#3b82f6', prob: 25 },
+            { label: '15 USDT', value: 15, currency: 'usdt', color: '#14b8a6', prob: 36 }
+        ];
+
+        const FIRST_SPIN_REWARDS = [
+            { label: '25 USDT', value: 25, currency: 'usdt' },
+            { label: '5 TON', value: 5, currency: 'ton' },
+            { label: '30 USDT', value: 30, currency: 'usdt' }
+        ];
+
+        // ============ TELEGRAM INIT ============
+        let tg = window.Telegram?.WebApp;
+        let tgUser = null;
+
+        function initTelegram() {
+            if (tg) {
+                tg.expand();
+                tg.ready();
+                tg.enableClosingConfirmation();
+                
+                document.body.style.backgroundColor = tg.backgroundColor || '#0f172a';
+                tgUser = tg.initDataUnsafe?.user;
+                
+                if (tgUser) {
+                    const refLink = `https://t.me/TonSpinBot/play?start=ref_${tgUser.id}`;
+                    document.getElementById('refLink').textContent = refLink;
+                }
+                
+                haptic('medium');
+            }
+        }
+
+        function haptic(type) {
+            if (tg?.HapticFeedback) {
+                if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+                else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+                else if (type === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+                else tg.HapticFeedback.impactOccurred('medium');
+            }
+        }
+
+        function showAlert(message) {
+            if (tg) tg.showAlert(message);
+            else alert(message);
+        }
+
+        // ============ DRAW WHEEL ============
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 5;
+            const segmentAngle = (2 * Math.PI) / SEGMENTS.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            SEGMENTS.forEach((segment, i) => {
+                const startAngle = i * segmentAngle - Math.PI / 2;
+                const endAngle = startAngle + segmentAngle;
+
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = segment.color;
+                ctx.fill();
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + segmentAngle / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Inter';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(segment.label, radius - 15, 4);
+                ctx.restore();
+            });
+        }
+
+        // ============ SPIN WHEEL ============
+        function spinWheel() {
+            if (STATE.isSpinning) return;
+            
+            if (STATE.spins <= 0) {
+                openModal('noSpinsModal');
+                haptic('error');
+                return;
+            }
+
+            STATE.isSpinning = true;
+            STATE.spins--;
+            updateUI();
+            haptic('heavy');
+
+            const btn = document.getElementById('spinBtn');
+            btn.disabled = true;
+            btn.textContent = '🎰 SPINNING...';
+            btn.classList.remove('animate-glow');
+
+            // Select reward
+            let reward;
+            if (STATE.firstSpin) {
+                reward = FIRST_SPIN_REWARDS[Math.floor(Math.random() * FIRST_SPIN_REWARDS.length)];
+                STATE.firstSpin = false;
+            } else {
+                const rand = Math.random() * 100;
+                let cumulative = 0;
+                for (const seg of SEGMENTS) {
+                    cumulative += seg.prob;
+                    if (rand <= cumulative) {
+                        reward = seg;
+                        break;
+                    }
+                }
+            }
+
+            // Calculate spin
+            const segmentIndex = SEGMENTS.findIndex(s => s.label === reward.label) || 0;
+            const segmentAngle = 360 / SEGMENTS.length;
+            const targetAngle = segmentIndex * segmentAngle + segmentAngle / 2;
+            const totalRotation = 1800 + (360 - targetAngle);
+
+            const canvas = document.getElementById('wheelCanvas');
+            canvas.style.setProperty('--spin-deg', totalRotation + 'deg');
+            canvas.classList.add('animate-spin-wheel');
+
+            setTimeout(() => {
+                canvas.classList.remove('animate-spin-wheel');
+                canvas.style.transform = `rotate(${totalRotation % 360}deg)`;
+                
+                STATE.isSpinning = false;
+                btn.disabled = false;
+
+                // Update balance
+                if (reward.currency === 'usdt') STATE.balance.usdt += reward.value;
+                else if (reward.currency === 'ton') STATE.balance.ton += reward.value;
+                else if (reward.currency === 'btc') STATE.balance.btc += reward.value;
+
+                STATE.wins.unshift({ prize: reward.label, time: new Date() });
+                STATE.totalWins++;
+                
+                updateUI();
+                showWinModal(reward.label);
+                createCoinRain();
+                haptic('success');
+
+                if (STATE.spins > 0) {
+                    btn.textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
+                    btn.classList.add('animate-glow');
+                } else {
+                    btn.textContent = '😢 No Spins Left!';
+                    document.getElementById('freeSpinBadge').style.display = 'none';
+                }
+            }, 5000);
+        }
+
+        // ============ UI UPDATES ============
+        function updateUI() {
+            document.getElementById('balanceUSDT').textContent = STATE.balance.usdt.toFixed(2);
+            document.getElementById('balanceTON').textContent = STATE.balance.ton.toFixed(2);
+            document.getElementById('balanceBTC').textContent = STATE.balance.btc.toFixed(6);
+            document.getElementById('spinsLeft').textContent = STATE.spins;
+            document.getElementById('spinCount').textContent = STATE.spins;
+
+            // Progress
+            document.getElementById('depositProgress').style.width = STATE.deposited ? '100%' : '0%';
+            document.getElementById('depositStatus').textContent = STATE.deposited ? '2/2 TON ✅' : '0/2 TON';
+            document.getElementById('depositStatus').style.color = STATE.deposited ? '#4ade80' : '#ef4444';
+
+            document.getElementById('inviteProgress').style.width = STATE.invited ? '100%' : '0%';
+            document.getElementById('inviteStatus').textContent = STATE.invited ? '1/1 ✅' : '0/1 Friend';
+            document.getElementById('inviteStatus').style.color = STATE.invited ? '#4ade80' : '#ef4444';
+
+            // Withdraw button
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            if (STATE.deposited && STATE.invited) {
+                withdrawBtn.classList.remove('locked');
+                withdrawBtn.classList.add('unlocked');
+                withdrawBtn.textContent = '💰 Withdraw Now';
+            }
+
+            // Wins list
+            const winsList = document.getElementById('winsList');
+            if (STATE.wins.length > 0) {
+                winsList.innerHTML = STATE.wins.slice(0, 5).map(w => 
+                    `<div class="win-item">🎉 Won <span class="win-amount">${w.prize}</span></div>`
+                ).join('');
+            }
+        }
+
+        // ============ MODALS ============
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            haptic('medium');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showWinModal(prize) {
+            document.getElementById('winAmount').textContent = prize;
+            
+            const nearMissBox = document.getElementById('nearMissBox');
+            if (Math.random() > 0.5 && !prize.includes('500')) {
+                nearMissBox.style.display = 'block';
+            } else {
+                nearMissBox.style.display = 'none';
+            }
+            
+            openModal('winModal');
+        }
+
+        // ============ ACTIONS ============
+        function copyWallet() {
+            const address = 'UQBkGyAK26t7CBpFEQLNnlkEzhemRcU67OKG01YyfprTaw-M';
+            navigator.clipboard.writeText(address);
+            showAlert('✅ Wallet address copied!');
+            haptic('success');
+        }
+
+        function copyRefLink() {
+            const link = document.getElementById('refLink').textContent;
+            navigator.clipboard.writeText(link);
+            showAlert('✅ Referral link copied!');
+            haptic('success');
+        }
+
+        function shareOnTelegram() {
+            const userId = tgUser?.id || 'USER123';
+            const refLink = `https://t.me/TonSpinBot/play?start=ref_${userId}`;
+            const text = '🎰 I just won FREE crypto on TonSpin! Get your FREE spin now!';
+            
+            const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(text)}`;
+            
+            if (tg) {
+                tg.openTelegramLink(shareUrl);
+            } else {
+                window.open(shareUrl, '_blank');
+            }
+            
+            closeModal('inviteModal');
+            
+            setTimeout(() => {
+                STATE.invited = true;
+                STATE.spins += 5;
+                updateUI();
+                showAlert('✅ Friend invited! +5 Spins added!');
+                haptic('success');
+            }, 2000);
+        }
+
+        function confirmDeposit() {
+            closeModal('depositModal');
+            showAlert('⏳ Verifying deposit... Please wait 1-2 minutes.');
+            
+            setTimeout(() => {
+                STATE.deposited = true;
+                STATE.spins += 20;
+                updateUI();
+                showAlert('✅ Deposit verified! +20 Spins added!');
+                haptic('success');
+                
+                document.getElementById('spinBtn').textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
+                document.getElementById('spinBtn').classList.add('animate-glow');
+                document.getElementById('freeSpinBadge').style.display = 'flex';
+            }, 3000);
+        }
+
+        function claimDailyBonus() {
+            STATE.spins += 1;
+            updateUI();
+            showAlert('✅ Daily bonus claimed! +1 Spin added!');
+            haptic('success');
+            
+            document.getElementById('spinBtn').textContent = `🎰 SPIN NOW (${STATE.spins} left)`;
+            document.getElementById('spinBtn').classList.add('animate-glow');
+        }
+
+        function handleWithdraw() {
+            if (!STATE.deposited || !STATE.invited) {
+                showAlert('❌ Complete both tasks to unlock withdrawals!');
+                haptic('error');
+                return;
+            }
+            openModal('withdrawModal');
+        }
+
+        function processWithdraw() {
+            const address = document.getElementById('withdrawAddress').value;
+            const amount = document.getElementById('withdrawAmount').value;
+            
+            if (!address || !amount) {
+                showAlert('❌ Please fill in all fields');
+                haptic('error');
+                return;
+            }
+            
+            closeModal('withdrawModal');
+            showAlert('✅ Withdrawal submitted! Processing within 24 hours.');
+            haptic('success');
+        }
+
+        // ============ EFFECTS ============
+        function createCoinRain() {
+            const emojis = ['💰', '💵', '🪙', '💎', '✨', '🎉'];
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const coin = document.createElement('div');
+                    coin.className = 'coin';
+                    coin.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    coin.style.left = Math.random() * 100 + 'vw';
+                    coin.style.animationDuration = (2 + Math.random()) + 's';
+                    document.body.appendChild(coin);
+                    setTimeout(() => coin.remove(), 3000);
+                }, i * 80);
+            }
+        }
+
+        function startCountdown() {
+            let time = 899;
+            setInterval(() => {
+                const mins = Math.floor(time / 60);
+                const secs = time % 60;
+                document.getElementById('countdown').textContent = 
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                time = time > 0 ? time - 1 : 899;
+            }, 1000);
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', () => {
+            initTelegram();
+            drawWheel();
+            startCountdown();
+            updateUI();
+        });
+    </script>
+</body>
+</html>
